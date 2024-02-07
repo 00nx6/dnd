@@ -39,30 +39,37 @@
 
 
 ## Pseudo code
-On startup, the user is asked to pick a class, given a showing of their stats and starting weapons. It is explained that the classes not picked will be given as team mates.
-the user is asked to enter a short prompt for the story scenario, or leave blank for gpt to freestyle. 
+### On startup:
+the user is asked to pick a class, given a showing of their stats and starting weapons. It is explained that the classes not picked will be given as team mates.
+
+the user is asked to enter a short prompt for the story scenario, or leave blank for gpt to freestyle.
+
 the prompt as `system` is sent to the openAi API.
-   The prompt specifies:
-      - what kind of weapons are in the game
-      - what the current level of the part is
-      - what kind of story it should generate
-      - return the same dict as fed but properly populated
-      - there is 1 player and 3 mute companion npcs
-         - cannot be interacted with
-      - try to steer the situation towards combat
-      - feel free to add other stuff to make it more interesting if you have time
+
+The prompt specifies:
+   - what kind of weapons are in the game
+   - what the current level of the part is
+   - what kind of story it should generate
+   - return the same dict as fed but properly populated
+   - there is 1 player and 3 mute companion npcs
+      - cannot be interacted with
+   - try to steer the situation towards combat
+   - feel free to add other stuff to make it more interesting if you have time
       
 Once the response is received the main title is displayed
 and the displayed story gets updated.
-the response contains actions, each action will be rendered as a button under the story
+
+the response contains `actions`, each action will be rendered as a button under the story
+
 if the dict contains `enemies`, a class called `Combat` will take effect where we do turn based attacks against the monster.
 <!-- 
    maybe remove friendly npcs? we want to focus more on the combat and exploration aka. `the fun bits` 
 -->
 if the dict contains `friendly_npcs` their interactivity options get presented under the main story
+
 if the dict contains `interact` items they should be presented as options to interact with
-   aka display them as prompts for the user to interact with under the main story.
-   when selected, it will return a pre-written prompt for the bot
+- display them as prompts for the user to interact with under the main story.
+when selected, it will return a pre-written prompt for the bot
    e.g:
       `The player pulled the lever on the wall.`
       `The player opened the chest and found an item.`
@@ -73,19 +80,23 @@ __Combat__:
 Combat is a class that takes the enemies from the dict and the player
 with his companions and pauses the story. (meaning no more calls until the battle is decided)
 
-Enemies will be made into a subclass of enemy having:
+##### Enemies will be made into a subclass of enemy having:
    - hp: int
    - dmg: text
    - def: int
 damage is given as `1d6 + 2` translating to 1 dice roll of a 6 sided dice + 2 as a base damage. 
 
 If damage done doesn't exceed def then attack will miss.
+
 there is a chance for the attack to completely miss.
 there is a chance for the attack to register as a crit (2x damage).
+
 This is for Sem to figure out how to make fair.
 
 Having 3 comrades, they will also each attempt an attack with the same rules.
+
 Upon victory or enemy slain a weapon upgrade is made.
+
 displays a cool picture, ripped straight off google search.
 
 __weapon__:
