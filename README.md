@@ -76,20 +76,19 @@ when selected, it will return a pre-written prompt for the bot
 
 continue game loop
    
-__Combat__:
+### Combat:
 Combat is a class that takes the enemies from the dict and the player
 with his companions and pauses the story. (meaning no more calls until the battle is decided)
 
-##### Enemies will be made into a subclass of enemy having:
+#### Enemies will be made into a subclass of enemy having:
    - hp: int
    - dmg: text
    - def: int
 damage is given as `1d6 + 2` translating to 1 dice roll of a 6 sided dice + 2 as a base damage. 
 
 If damage done doesn't exceed def then attack will miss.
-
-there is a chance for the attack to completely miss.
-there is a chance for the attack to register as a crit (2x damage).
+ - there is a chance for the attack to completely miss.
+ - there is a chance for the attack to register as a crit (2x damage).
 
 This is for Sem to figure out how to make fair.
 
@@ -114,9 +113,9 @@ Sends current weapon to companions subclass, receives damage value based on its 
 
 __party__:
 Contains the player and companions.
-Mainly manages turns in combat for the npcs
-Also keeps track of party level. 
-This decides How strong companions are.
+
+Mainly manages turns in combat for the npcs and also keeps track of party level. This decides how strong companions are.
+
 The amount of enemies to be slain before a party level up is as follows:
 Level: number_of_enemies
    - 1: 1
@@ -125,22 +124,28 @@ Level: number_of_enemies
    - 4: 8
    - 5: 10
 max cap: 10 enemies
+
 Also influences enemy strength, higher level party = higher level enemies.
 
 __player__:
 Should ideally be a class
+
 Has a name, inventory, and a class. ask sem
+
 when performing an attack a weapon is selected from the inventory if there is 1 available
+
 that weapon is passed onto the player class subclass
+
 receives damage from players class subclass
 
 __player class__:
 subclass of player
-receives weapon details from the player class
-calculates damage
-returns damage to player
+
+receives weapon details from the player class, calculates damage, then returns damage to player
+
 contains the players health value, damage formula and defense
 these change based on level, appropriate values need to be decided.
+
 Available classes: 
    - Figher
    - Mage
@@ -149,18 +154,20 @@ Available classes:
 
 __monsters__:
 Should ideally be a class
+
 Has a name, inventory, and a class. ask sem
-when performing an attack a weapon is selected from the inventory if there is 1 available
-that weapon is passed onto the monster type subclass
+
+when performing an attack a weapon is selected from the inventory if there is 1 available that weapon is passed onto the monster type subclass
 receives damage from monster type subclass
 
 __monster type__:
 subclass of monster
-receives weapon details or modifiers from the monster class
-calculates damage
-returns damage to monster
+
+receives weapon details or modifiers from the monster class, calculates damage, returns damage to monster
+
 contains the monster health value, damage formula and defense
 these change based on level, appropriate values need to be decided.
+
 Available enemy types: 
    - goblin
    - orc
