@@ -5,7 +5,7 @@
    - return correct format
    - understand setting/classes
    - make monsters, quests, items,
-   - 
+
     
  - Class for interpreting API responses 
      - Class for managing the level that were in -
