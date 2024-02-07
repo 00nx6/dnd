@@ -70,9 +70,9 @@ if the dict contains `friendly_npcs` their interactivity options get presented u
 if the dict contains `interact` items they should be presented as options to interact with
 - display them as prompts for the user to interact with under the main story.
 when selected, it will return a pre-written prompt for the bot
-   e.g:
-      - `The player pulled the lever on the wall.`
-      - `The player opened the chest and found an item.`
+e.g:
+- `The player pulled the lever on the wall.`
+- `The player opened the chest and found an item.`
 
 continue game loop
    
