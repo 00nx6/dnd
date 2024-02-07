@@ -1,41 +1,58 @@
-from random import randint, choice
-import pickle as pickle_rick
+import random
+import pickle
+import os
+
 INITIAL_HEALTH = 100
+# [(noun, strength, reliability, weight,)...]
+NOUNS = [('sword', 4, 8, 5), ('shield', 1, 8, 8), ('bow', 8, 2, 3), ('canon', 9, 2, 15), ('force field', 2, 7, 1), ('drone', 9, 2, 20), ('tank', 9, 7, 45)]
+# [(adjective, multiplier,)...]
+ADJECTIVES = [('wooden', 1), ('bronze', 2), ('steel', 3), ('diamond', 4), ('nanofiber', 5), ('unobtainium', 6), ('epic', 7), ('legendary', 8), ('eternal', 9)]
+
 
 def ask_choice(prompt, choices):
-    """ask_choice
+    """Asks the user to choose one of the provided choices.
 
-    Args:
-        prompt (text): Text displayed to the user
-        choices (list): choices presented to the user
+    Parameters
+    ----------
+    prompt: str
+        The question to ask the user.
+    choices: list or set
+        The options the user can choose from. Each choice can be a string, or any other type
+        as long as it can be converted to a string (using an `__str__` method).
 
-    Raises:
-        ValueError: Raised when no options are given
-
-    Returns:
-        list item: chosen item from choices
+    Returns
+    -------
+    The selected item out of choices.
     """
-    choices = list(choices)
+    choices = list(choices) # in case choices is a set, we want to convert it to a list
     if len(choices) == 0:
         raise ValueError("No options")
     while True:
         print(prompt)
-        for index, _choice in enumerate(choices):
-            print(f"  {index+1}. {str(_choice).capitalize()}")
+        for index, choice in enumerate(choices):
+            print(f"  {index+1}. {str(choice).capitalize()}")
         index = ask_int("> ") - 1
         if 0 <= index < len(choices):
             return choices[index]
+        print("Invalid input, try again\n")
 
 def ask_int(prompt="", min_value=None, max_value=None):
-    """_summary_
+    """Like `input()`, but keeps repeating the question until the user enters a non-negative integer,
+    that lies between the given boundaries.
 
-    Args:
-        prompt (str, optional): what ever is displayed next to used input eg. ' > ' in ask_choice. Defaults to "".
-        min_value (int, optional): Minimum value for accepted input. Defaults to None.
-        max_value (int, optional): maximum value for accepted input. Defaults to None.
+    Parameters
+    ----------
+    prompt: str
+        The question to ask the user.
+    min_value: int or None
+        An optional minimum allowed value (inclusive).
+    max_value: int or None
+        An optional maximum allowed value (inclusive).
 
-    Returns:
-        int: user input
+    Returns
+    -------
+    int
+        The value entered by the user.
     """
     while True:
         result = input(prompt)
@@ -43,252 +60,162 @@ def ask_int(prompt="", min_value=None, max_value=None):
             result = int(result)
             if (min_value is None or result >= min_value) and (max_value is None or result <= max_value):
                 return result
+        print("Invalid input, try again\n")
 
 
 class Game:
     def __init__(self):
-        count = ask_int("How many players? ", 2, 6)
-        self.__players = [Player(num) for num in range(count)]
+        """The constructor. It asks the user how many players should participate,
+        creates objects for each, and stores them in a list in the `players`
+        attribute."""
+        try:
+            with open('game_state.pickle', 'rb') as game_file:
+                loaded_game = pickle.load(game_file)
+                self.__dict__.update(loaded_game.__dict__)
+        except (FileNotFoundError, pickle.UnpicklingError):
+            self.__players = [Player() for _ in range(ask_int("How many players? ", 2, 6))]
+            self.turn = 0
+
 
     def run(self):
-        # Main game loop
-        turn = 0
-        while not self.declare_winner(): # While theres no winner
-            player = self.__players[turn % len(self.__players)]
+        """Runs the actual game until someone wins."""
+        while not self.declare_winner():
+            player = self.__players[self.turn % len(self.__players)]
             if not player.is_dead(): # Skip dead players
                 self.print_players(player)
                 player.play_turn(self) # Pass a reference to this `Game` object
-            pickle_my_game_state(self)
-            turn += 1
-            
+            self.turn += 1
+            with open('game_state.pickle', 'wb') as game_file:
+                pickle.dump(self, game_file)
+
     def print_players(self, current_player):
+        """Prints all players (using the `Player.__str__` method), marking the current
+        player with an arrow."""
         print()
         for player in self.__players:
             print(f'{"->" if player == current_player else "  "} {player}')
         print()
 
-    def declare_winner(self):
-        players = [player for player in self.__players if not player.is_dead()]
-        if len(players) == 1:
-            print(f'{players[0]} has won the game.')
+    def declare_winner(self) -> bool:
+        """Checks if there's only one player left alive, and if so, prints a message declaring
+        him/her the winner.
+
+        Returns
+        -------
+        bool
+            True when there's a winner, False if not.
+        """
+        alive_players = [player for player in self.__players if not player.is_dead()]
+
+        if len(alive_players) == 1:
+            print(f"{alive_players[0].get_name()} is the winner!")
+            os.remove('game_state.pickle')
             return True
         return False
     
-    def get_target(self, target):
-        # next just returns first item if no other arguments are given, same as [0]
-        return next(player for player in self.__players if target == player)
-    
-    def players(self, current):
-        return [player for player in self.__players if player != current and not player.is_dead()]
+    def get_players(self):
+        return self.__players
 
-    
+
 class Player:
-    def __init__(self, num) -> None:
+    def __init__(self):
+        self.__name = input("what is your name? ")
         self.__hp = INITIAL_HEALTH
-        self.__name = input(f'Enter name for player {num + 1}: ')
         self.__weapons = []
-        
-    def __str__(self) -> str:
-        if self.__hp > 0:
-            return f'{self.__name} ({self.__hp} HP, {self.get_weapon_count()} weapons, {self.get_weapon_weight()} KG)'
-        
-        return f'{self.__name}'
 
-    def get_weapon_count(self) -> int:
-        return len(self.__weapons)
-    
-    def get_weapon_weight(self) -> int:
-        weight = 0
-        for weapon in self.__weapons:
-            weight += weapon.get_weight()
-        return weight
+    def play_turn(self, game: Game):
 
-    def weapon_upgrade(self) -> None:
-        if len(self.__weapons) > 1:
-            chosen_weapon = ask_choice(prompt='Which weapon do you want to upgrade?',
-                                        choices=self.__weapons)
-            chosen_weapon.upgrade()
+        if len(self.__weapons) > 0:
+            options = ['heal', 'attack', 'find weapon', 'upgrade']
         else:
-            self.__weapons[0].upgrade()
-        
-    def is_dead(self) -> bool:
-        return self.__hp <= 0
+            options = ['heal', 'find weapon']
+        action = ask_choice(f"{self.__name}, what will you do?", options)
 
-    def heal(self) -> None:
-        # calculates hp_heal as half of the difference between initial health and current hp
-        # if hp_heal is below 5, 5 is defaulted to.
-        hp_heal = int(max((INITIAL_HEALTH - self.__hp) / 2, 5))
-        if self.__hp < 30:
-            print(f'{self.__name} is returning from the brink of death.')
-        elif self.__hp < 70:
-            print(f'{self.__name} is starting to feel better.')
-        else:
-            print(f'{self.__name} is feeling great.')
-        
-        print(f'{self.__name} healed for {hp_heal} to {hp_heal + self.__hp}')
-        self.__hp += hp_heal
-        
-    def attack(self, game) -> None:
-        """
-        Args:
-            game (obj): current game instance
-        """
-        target_selection = ask_choice(prompt='Which player would do you want to attack?',
-                                    choices=game.players(self))
-        if len(self.__weapons) > 1:
-            attack_weapon = ask_choice(prompt='Which weapon do you to use?',
-                                        choices=[weapon for weapon in self.__weapons if not weapon.is_broken()])
-        else:
-            attack_weapon = self.__weapons[0]
-        
-        target = game.get_target(target_selection)
-        target.sustain_damage(damage=attack_weapon.get_damage())
-    
-    def sustain_damage(self, damage):
-        """
-        Args:
-            damage (int): Number to be deducted from player's health
-        """
-        self.__hp -= damage
-        
-        print(f'{self.__name} was attacked for {damage} point(s) damage.')
-        if self.is_dead():
-            print(self, 'has perished')
-
-    def play_turn(self, game):
-        """
-        Args:
-            game (obj): Current game instance
-        """
-
-        choices = [
-            'Attack',
-            'Heal',
-            'Find weapon',
-            'Upgrade weapon'
-        ]
-        # if player has no weapons options needing a weapon are disabled
-        if not self.__weapons:
-            choices.pop(choices.index('Attack'))
-            choices.pop(choices.index('Upgrade weapon'))
-        
-        choice = ask_choice(prompt=f'{self.__name}, What will you do?', choices=choices)
-        
-        match choice.lower():
-            case 'heal':
-                self.heal()
-            case 'attack':
-                self.attack(game)
-            case 'find weapon':
-                self.__weapons.append(Weapon())
-                print(f'{self.__name} found:', self.__weapons[-1])
-            case 'upgrade weapon':
-                self.weapon_upgrade()
+        match action:
+            case "heal":
+                self.__heal()
+            case "attack":
+                self.__attack(game.get_players())
+            case "find weapon":
+                new_weapon = Weapon()
+                self.__weapons.append(new_weapon)
+                print(f"You have found a new weapon: {new_weapon}")
+            case "upgrade":
+                weapon = ask_choice("Which weapon would you like to upgrade?", self.__weapons)
+                weapon.upgrade()
             case _:
                 pass
-        
+
         while self.get_weapon_weight() > 50:
-            self.force_drop()
-            
-        self.weapon_status()
+            weapon = ask_choice("You are too heavy, which weapon would you like to drop?", self.__weapons)
+            self.__weapons.remove(weapon)
+
+    def __heal(self):
+        self.__hp += max((INITIAL_HEALTH - self.__hp) // 2, 5)
+        print(f"{self.__name} is starting to feel better: {self.__hp} hp")
+
+    def is_dead(self):
+        return self.__hp <= 0
     
-    def weapon_status(self):
+    def sustain_damage(self, damage: int):
+        self.__hp = max(self.__hp - damage, 0)
+        if self.is_dead():
+            print(f"{self.__name} died.")
+        print(f"{self.__name} suffered {damage} damage.")
+
+    def __str__(self):
+        if self.is_dead():
+            return f"{self.__name} (DEAD)"
+        return f"{self.__name} ({self.__hp} hp, {self.get_weapon_count()} weapons, {self.get_weapon_weight()} kg)"
+
+    def __attack(self, game_players):
+        attack_options = [player for player in game_players if not player.is_dead() and player != self]
+        target = ask_choice(f"{self.__name}, which player would you like to attack?", attack_options)
+        weapon = ask_choice("With which weapon would you like to attack?", self.__weapons)
+        target.sustain_damage(weapon.get_damage())
+
+    def get_name(self):
+        return self.__name
+    
+    def get_weapon_count(self):
+        return len(self.__weapons)
+    
+    def get_weapon_weight(self):
+        total_weight = 0
         for weapon in self.__weapons:
-            if weapon.is_broken():
-                print(weapon, f'It\'s now junk and {self.__name} dropped it.')
-                self.__weapons.pop(self.__weapons.index(weapon))
+            total_weight += weapon.get_weight()
+        return total_weight
     
-    def force_drop(self):
-        print('You are carrying too many weapons, and have exceeded 50KGs of weight.')
-        print('-------------')
-        _choice = ask_choice(prompt='Select which weapons to drop.',
-                             choices=self.__weapons)
-        
-        self.__weapons.pop(self.__weapons.index(_choice))
-        print('-------------')
-        print(_choice, 'Was dropped.')
-        
-        
 class Weapon:
+
     def __init__(self):
-        # [(noun, strength, reliability, weight)...]
-        self.__weapon_types = [
-            ('sword', 4, 8, 5),
-            ('shield', 1, 8, 8),
-            ('bow', 8, 2, 3),
-            ('canon', 9, 2, 15),
-            ('force field', 2, 7, 1),
-            ('drone', 9, 2, 20),
-            ('tank', 9, 7, 45)
-        ]
+        self.__noun, self.__strength, self.__reliability, self.__weight = random.choice(NOUNS)
+        adjective, multiplier = random.choice(ADJECTIVES)
+        self.__strength = round(self.__strength * multiplier / 5) # Apply the multiplier to strength
+        self.__name = f"{adjective} {self.__noun}".title()
         
-        # [(adjective, multiplier)...]
-        self.__modifiers = [
-                ('wooden', 1),
-                ('bronze', 2),
-                ('steel', 3),
-                ('diamond', 4),
-                ('nanofiber', 5),
-                ('unobtainium', 6),
-                ('epic', 7),
-                ('legendary', 8),
-                ('eternal', 9)
-            ]
-        
-        # choice is random.choice
-        self.__weapon_type, self.__strength, self.__reliability, self.__weight = choice(self.__weapon_types)
-        self.__weapon_modifier, self.__multiplier = choice(self.__modifiers)
-        
-    def __str__(self) -> str:
-        if not self.is_broken():
-            return f'\n{self.__weapon_modifier.upper()} {self.__weapon_type.upper()}\nStrength: {self.__strength}\nWeight: {self.__weight}\nReliability: {self.__reliability}'
-        return f'{self.__weapon_modifier.upper()} {self.__weapon_type.upper()} (BROKEN)'
-    
-    def upgrade(self) -> None:
-        # basic variable, underscore to not redefine imported function
-        _choice = choice([self.__reliability, self.__strength])
-        _choice += randint(0, 15)
-
-        self.__weight += randint(0, 5)
-        print(self)
-    
-    def get_damage(self) -> int:
-        strength = round(self.__strength * self.__multiplier / 5)
-        # if the weapons durability is above 0 itll get a random multiplier in the range of 1 to durability
-        # else defaults to 0 because weapon is broken
-        damage = strength * randint(1, self.__reliability) if self.__reliability else 0
-        
-        self.decrement()
-        return damage
-    
-    def is_broken(self) -> bool:
-        return self.__reliability == 0
-    
-    def decrement(self) -> None:
+    def get_damage(self):
+        if self.__reliability <= 0:
+            return 1
         self.__reliability -= 1
+        return self.__strength
 
-    def get_weight(self) -> int:
+    def __str__(self) -> str:
+        if self.__reliability <= 0:
+            return f"{self.__name} (BROKEN)"
+        return f"{self.__name} ({self.__strength} strength, {self.__reliability} reliability, {self.__weight} kg)"
+    
+    def upgrade(self):
+        upgrade_options = 1 if self.__reliability <= 0 else random.randint(1, 2)
+        if upgrade_options == 1:
+            self.__reliability += random.randint(1, 15)
+        else:
+            self.__strength += random.randint(1, 15)
+
+        self.__weight += random.randint(1, 5)
+
+    def get_weight(self):
         return self.__weight
 
-def pickle_my_game_state(game):
-    pickled_rick = pickle_rick.dumps(game)
-    with open('file', 'ab') as file:
-        pickle_rick.dump(pickled_rick, file)
-    
-def unpickle_my_game_state():
-    with open('file', 'rb') as file:
-        pickled_game = pickle_rick.load(file)
-    return pickle_rick.loads(pickled_game)
-
-def main():
-    try:
-        game = unpickle_my_game_state()
-        if not game:
-            raise ValueError()
-    except ValueError:
-        game = Game()
-
-    game.run()
-    
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    Game().run()
