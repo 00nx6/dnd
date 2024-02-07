@@ -71,8 +71,8 @@ if the dict contains `interact` items they should be presented as options to int
 - display them as prompts for the user to interact with under the main story.
 when selected, it will return a pre-written prompt for the bot
    e.g:
-      `The player pulled the lever on the wall.`
-      `The player opened the chest and found an item.`
+      - `The player pulled the lever on the wall.`
+      - `The player opened the chest and found an item.`
 
 continue game loop
    
@@ -80,10 +80,8 @@ continue game loop
 Combat is a class that takes the enemies from the dict and the player
 with his companions and pauses the story. (meaning no more calls until the battle is decided)
 
-#### Enemies will be made into a subclass of enemy having:
-   - hp: int
-   - dmg: text
-   - def: int
+Enemies will be stored in the combat instance.
+
 damage is given as `1d6 + 2` translating to 1 dice roll of a 6 sided dice + 2 as a base damage. 
 
 If damage done doesn't exceed def then attack will miss.
@@ -152,15 +150,19 @@ Available classes:
    - Barbarian
    - Rogue
 
-__monsters__:
+__enemy__:
 Should ideally be a class
+They will have: 
+   - hp: int
+   - dmg: text
+   - def: int
 
 Has a name, inventory, and a class. ask sem
 
 when performing an attack a weapon is selected from the inventory if there is 1 available that weapon is passed onto the monster type subclass
 receives damage from monster type subclass
 
-__monster type__:
+__enemy type__:
 subclass of monster
 
 receives weapon details or modifiers from the monster class, calculates damage, returns damage to monster
