@@ -10,6 +10,7 @@ def setup():
     return render_template('setup.html',
                            classes=[SubClass(), SubClass(), SubClass(), SubClass()],
                            nav_title='Welcome.')
+                           
 
 class SubClass:
     def __init__(self):
