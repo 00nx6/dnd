@@ -5,6 +5,24 @@ app = Flask(__name__)
 
 app.config['TEMPLATE_AUTO_RELOAD'] = True
 
+@app.route('/class_setup', methods=['POST', 'GET'])
+def setup():
+    return render_template('setup.html',
+                           classes=[SubClass(), SubClass(), SubClass(), SubClass()],
+                           nav_title='Welcome.')
+
+class SubClass:
+    def __init__(self):
+        self.hp = 12
+        self.name = 'Archer'
+        self.img_src = '../static/courser.png'
+
+def main():
+    pass
+
+if __name__ == '__main__':
+    main()
+
 """
 what i have so far for the prompt:
 
@@ -105,10 +123,3 @@ ai_response = {
     }
 }
 
-
-"""
-initial prompt has to specify:
-    - specify the weapons in the game
-    - types of monsters
-    
-"""
