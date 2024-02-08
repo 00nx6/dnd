@@ -109,7 +109,6 @@ ai_response = {
         # should be used in exploration parts of the story
         # can be left blank in combat situations/exploration situations
         # only populate if mentioned by name in the story
-        
         'interact': [
             {
                 'name': 'chest',
