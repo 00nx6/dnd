@@ -7,6 +7,8 @@
     --off-white: rgb(190, 190, 190); 
     --off-black: #04151f;
     --base_font: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+    --nav-height: 7dvh;
 }
 
 * {
@@ -27,7 +29,7 @@ li, a {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 7dvh;
+    height: var(--nav-height);
     padding: 1rem 3rem;
     background-color: var(--off-black);
     color: var(--off-white);
@@ -132,4 +134,28 @@ main {
 .class_cont > button > a {
     font-size: 1.25rem;
 
+}
+
+.enemies_cont {
+    max-width: 50dvw;
+    height: calc(100dvh - var(--nav-height));
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.enemies_cont > .class_cont {
+    height: 40dvh;
+    width: 40%;
+}
+.enemies_cont > .class_cont > .stats > .stats_list > ul {
+    gap: 1rem;
+
+} 
+.enemies_cont > .class_cont > img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
 }

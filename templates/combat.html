@@ -3,6 +3,102 @@
 
 {% block body %}
 
-
+    <div class="enemies_cont">
+        {% for enemy in enemies %}
+            <div class="class_cont">
+                <img src="../static/courser.png" alt="Class image">
+                <div class="stats">
+                    <h2 class="class_name"> {{ enemy['name'] }} </h2>
+                    <div class="stats_list">
+                        <ul>
+                            <li class="stat_cont">
+                                <h3 class="stat">{{ enemy['hp'] }}</h3>
+                                <hr>
+                                <img src="../static/setup_img/health-care.png" alt="../">
+                            </li>
+                            <li class="stat_cont">
+                                <h3 class="stat"> 42 </h3>
+                                <hr>
+                                <img src="../static/setup_img/shield.png" alt="">
+                            </li>
+                            <li class="stat_cont">
+                                <h3 class="stat"> 12 </h3>
+                                <hr>
+                                <img src="../static/setup_img/sword.png" alt="">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <button>
+                    <a href="/class/ {{enemy['name'] }}">Select</a>
+                </button>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="player_info">
+        <div class="player_card">
+            <div class="class_cont">
+                <img src="../static/courser.png" alt="Class image">
+                <div class="stats">
+                    <h2 class="class_name"> {{ player['name'] }} </h2>
+                    <div class="stats_list">
+                        <ul>
+                            <li class="stat_cont">
+                                <h3 class="stat">{{ player['hp'] }}</h3>
+                                <hr>
+                                <img src="../static/setup_img/health-care.png" alt="../">
+                            </li>
+                            <li class="stat_cont">
+                                <h3 class="stat"> 42 </h3>
+                                <hr>
+                                <img src="../static/setup_img/shield.png" alt="">
+                            </li>
+                            <li class="stat_cont">
+                                <h3 class="stat"> 12 </h3>
+                                <hr>
+                                <img src="../static/setup_img/sword.png" alt="">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <button>
+                    <a href="/class/ {{ player['name'] }}">Select</a>
+                </button>
+            </div>
+        </div>
+        <div class="player_partners">
+            {% for npc in npcs %}
+            <div class="class_cont">
+                <img src="../static/courser.png" alt="Class image">
+                <div class="stats">
+                    <h3>npc</h3>
+                    <h2 class="class_name"> {{ npc['name'] }} </h2>
+                    <div class="stats_list">
+                        <ul>
+                            <li class="stat_cont">
+                                <h3 class="stat">{{ npc['hp'] }}</h3>
+                                <hr>
+                                <img src="../static/setup_img/health-care.png" alt="../">
+                            </li>
+                            <li class="stat_cont">
+                                <h3 class="stat"> 42 </h3>
+                                <hr>
+                                <img src="../static/setup_img/shield.png" alt="">
+                            </li>
+                            <li class="stat_cont">
+                                <h3 class="stat"> 12 </h3>
+                                <hr>
+                                <img src="../static/setup_img/sword.png" alt="">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <button>
+                    <a href="/class/ {{ npc['name'] }}">Select</a>
+                </button>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
 
 {% endblock body %}

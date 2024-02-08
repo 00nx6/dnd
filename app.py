@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 # from random import randint
-from combat import damage_calc
+import combat as c
 
 
 class Player:
@@ -9,6 +9,7 @@ class Player:
         self.subclass = 'Archer'
         self.damage = '1d6+2'
         self.defense = '4'
+        self.hp = 12
 
 class Enemy:
     def __init__(self):
@@ -28,7 +29,17 @@ def index():
 
 @app.route('/combat', methods=['GET'])
 def combat():
-    return str(damage_calc())
+    return render_template('combat.html',
+                           enemies=[Enemy() for _ in range(4)],
+                           team=[Player() for _ in range(4)],
+                           npcs=[Player() for _ in range(3)],
+                           player=Player())
+                           
+
+@app.route('/combat/<enemy>')
+def enemy_selection(enemy):
+    damage = c.damage_calc()
+    return render_template('combat.html')
 
 @app.route('/class_setup', methods=['POST', 'GET'])
 def setup():
