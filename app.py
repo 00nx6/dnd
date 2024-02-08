@@ -2,21 +2,20 @@ from flask import Flask, render_template, request, redirect
 from random import randint
 
 app = Flask(__name__)
-
 app.config['TEMPLATE_AUTO_RELOAD'] = True
 
 @app.route('/class_setup', methods=['POST', 'GET'])
 def setup():
     return render_template('setup.html',
-                           classes=[SubClass(), SubClass(), SubClass(), SubClass()],
-                           nav_title='Welcome.')
-                           
+                           classes=[player_class for player_class in classes],
+                           nav_title='Welcome.'
+                        )
 
-class SubClass:
-    def __init__(self):
-        self.hp = 12
-        self.name = 'Archer'
-        self.img_src = '../static/courser.png'
+@app.route('/class/<class_name>', methods=['POST', 'GET'])
+def return_class(class_name):
+    return class_name
+    
+
 
 def main():
     pass
