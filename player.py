@@ -22,4 +22,3 @@ class Player:
         if self.__is_npc:
             return 'attack automatically'
         return 'attack after choice'
-
