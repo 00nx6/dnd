@@ -3,7 +3,7 @@ from openai import OpenAI # `poetry add openai`
 
 # Configure the OpenAI API to work through our server (for payment credits)
 openai = OpenAI(
-    api_key="YOUR_TOKEN_GOES_HERE",
+    api_key="YOUR_TOKEN_GOES_HERE", # dldr7bh6dp55
     base_url="https://openai.sd42.nl/api/providers/openai/v1"
 )
 
