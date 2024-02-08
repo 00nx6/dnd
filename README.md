@@ -1,16 +1,14 @@
 # D&D
 
 ## TODO:
- - Make the prompt
+ - Make the prompt - Sem
    - return correct format
    - understand setting/classes
    - make monsters, quests, items,
 
     
- - Class for interpreting API responses 
-     - Class for managing the level that were in -
+ - Class for interpreting API responses - Martijn 
      - Class for managing monsters - Sem
-     - Class to manage quests
      - When defeating an enemy:
         - Upgrade weapon
      - Level up
@@ -76,7 +74,7 @@ when selected, it will return a pre-written prompt for the bot
 
 continue game loop
    
-### Combat:
+### Combat: - Lajos
 Combat is a class that takes the enemies from the dict and the player
 with his companions and pauses the story. (meaning no more calls until the battle is decided)
 
@@ -96,20 +94,20 @@ Upon victory or enemy slain a weapon upgrade is made.
 
 displays a cool picture, ripped straight off google search.
 
-__weapon__:
+__weapon__: Lucas and Noah
 Contains weapon 
    - name 
    - durability
    - damage formulae 
    - link to icon (link to local storage of small png)
 
-__companions__:
+__companions__: - Martijn
 Base mute companions.
 Has inventory, random weapons inside based on team level.
 They have an appropriate amount of health, defense based on team level. Ask Sem.
 Sends current weapon to companions subclass, receives damage value based on its formula. Ask sem
 
-__party__:
+__party__: 
 Contains the player and companions.
 
 Mainly manages turns in combat for the npcs and also keeps track of party level. This decides how strong companions are.
@@ -125,7 +123,7 @@ max cap: 10 enemies
 
 Also influences enemy strength, higher level party = higher level enemies.
 
-__player__:
+__player__: - Martijn/Sem
 Should ideally be a class
 
 Has a name, inventory, and a class. ask sem
@@ -136,7 +134,7 @@ that weapon is passed onto the player class subclass
 
 receives damage from players class subclass
 
-__player class__:
+__player class__: - Martijn
 subclass of player
 
 receives weapon details from the player class, calculates damage, then returns damage to player
@@ -150,7 +148,7 @@ Available classes:
    - Barbarian
    - Rogue
 
-__enemy__:
+__enemy__: - Lajos
 Should ideally be a class
 They will have: 
    - hp: int
@@ -161,8 +159,6 @@ Has a name, inventory, and a class. ask sem
 
 when performing an attack a weapon is selected from the inventory if there is 1 available that weapon is passed onto the monster type subclass
 receives damage from monster type subclass
-
-__enemy type__:
 subclass of monster
 
 receives weapon details or modifiers from the monster class, calculates damage, returns damage to monster
