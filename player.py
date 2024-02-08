@@ -6,7 +6,7 @@ class Player:
         self.__is_npc = is_npc
         self.__weapon = weapon
         self.__name = name
-        match player_class:
+        match player_class.lower():
             case 'fighter':
                 self.__health = 10
             case 'rogue':
