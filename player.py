@@ -24,12 +24,12 @@ class Player:
 
     def attack(self, targets, target=None):
         damage = 0
-        dice = self.__weapon.get('dice', '1d4').split('d')
+        dice = self.__weapon.get('dice', '1d4').split('d') # type: ignore
 
         for _ in range(1, int(dice[0])):
             damage += randint(1, dice[1])
 
-        damage += self.__weapon.get('modifier', 0)
+        damage += self.__weapon.get('modifier', 0) # type: ignore
 
         if self.__is_npc:
             target = targets[randint(0, len(targets))]
