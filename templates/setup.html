@@ -31,22 +31,24 @@
                             <li class="stat_cont">
                                 <h3 class="stat">{{ class['hp'] }}</h3>
                                 <hr>
-                                <img src="../static/courser.png" alt="../">
+                                <img src="../static/setup_img/health-care.png" alt="../">
                             </li>
                             <li class="stat_cont">
                                 <h3 class="stat"> 42 </h3>
                                 <hr>
-                                <img src="../static/courser.png" alt="">
+                                <img src="../static/setup_img/shield.png" alt="">
                             </li>
                             <li class="stat_cont">
                                 <h3 class="stat"> 12 </h3>
                                 <hr>
-                                <img src="../static/courser.png" alt="">
+                                <img src="../static/setup_img/sword.png" alt="">
                             </li>
                         </ul>
                     </div>
                 </div>
-                <button>Select</button>
+                <button>
+                    <a href="/class/ {{class['name'] }}">Select</a>
+                </button>
             </div>
         {% endfor %}
     </main>
