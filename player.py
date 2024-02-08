@@ -1,8 +1,8 @@
 from random import randint
-from weapon import player_weapons, Weapon
+from weapon import player_weapons
 
 class Player:
-    def __init__(self, weapons: list[Weapon], name: str, player_class: str, is_npc: bool) -> None:
+    def __init__(self, weapons, name: str, player_class: str, is_npc: bool) -> None:
         self.__is_npc = is_npc
         self.__weapons = weapons
         # placeholder
@@ -55,7 +55,8 @@ class Player:
     def level_up(self):
         self.__level += 1
         self.__defense += 1
-        self.__weapon = self.__weapons[self.__level-1]
+        weapon_string = f"level {self.__level}"
+        self.__weapon = self.__weapons.get(weapon_string, 'level 1') # type: ignore
 
     def take_damage(self, damage: int):
         if (damage - self.__defense) <= 0:
