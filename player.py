@@ -19,6 +19,7 @@ class Player:
                 self.__health = 12
             case _:
                 self.__health = 0
+        self.__current_health = self.__health
 
     def attack(self, targets, target=None):
         damage = 0
@@ -40,3 +41,20 @@ class Player:
     
     def level_up(self):
         self.__weapon = self.__weapons[self.__level-1]
+
+    def take_damage(self, damage: int):
+        self.__current_health -= damage
+        # return if health is below / equals 0?
+
+    def get_current_health(self):
+        return self.__current_health
+    
+    def get_max_health(self):
+        return self.__health
+    
+    def heal_to_full(self):
+        self.__current_health = self.__health
+
+
+
+
