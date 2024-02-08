@@ -6,7 +6,7 @@ class Monster:
         self.__weapon = weapon
 
     def get_name(self):
-        return self.__name    
+        return self.__name
 
     def get_hp(self):
         return self.__hp
