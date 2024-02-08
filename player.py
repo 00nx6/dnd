@@ -88,6 +88,8 @@ class Player:
             target = targets[randint(0, len(targets))]
             target.take_damage(damage)
             return
+        if target is None:
+            return
         target.take_damage(damage)
         return
     
