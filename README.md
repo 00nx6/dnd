@@ -134,7 +134,7 @@ that weapon is passed onto the player class subclass
 
 receives damage from players class subclass
 
-__player class__: - Noah
+__player class__: - Martijn
 subclass of player
 
 receives weapon details from the player class, calculates damage, then returns damage to player
