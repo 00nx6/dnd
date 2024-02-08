@@ -16,7 +16,11 @@ class Enemy:
         self.name = 'Goblin'
         self.subclass = 'Archer'
         self.damage = '1d6+2'
-        self.defense = '4'
+        self.defense = '2'
+        self.hp = 10
+
+    def sustain_damage(self):
+        self.hp -= c.damage_calc(player=Player())
 
 
 app = Flask(__name__)
@@ -33,7 +37,8 @@ def combat():
                            enemies=[Enemy() for _ in range(4)],
                            team=[Player() for _ in range(4)],
                            npcs=[Player() for _ in range(3)],
-                           player=Player())
+                           player=Player()
+                    )
                            
 
 @app.route('/combat/<enemy>')

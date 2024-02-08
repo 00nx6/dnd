@@ -17,7 +17,7 @@ class Enemy:
 player = Player()
 enemies = [Enemy() for _ in range(4)]
 
-def damage_calc():
+def damage_calc(player):
     dice_roll, base = player.damage.split('+')
     no_rolls, sided_dice = dice_roll.split('d')
     damage = 0
@@ -26,8 +26,4 @@ def damage_calc():
         damage += int(base)
     return damage
 
-def combat_flow():
-    enemy_count = len(enemies)
-    if enemy_count > 1:
-        target = enemy_selection(enemies)
-        attack(target)
+
