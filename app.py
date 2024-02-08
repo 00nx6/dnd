@@ -1,6 +1,22 @@
-from flask import Flask, render_template, request, redirect
-from random import randint
+from flask import Flask, render_template
+# from random import randint
 from combat import damage_calc
+
+
+class Player:
+    def __init__(self):
+        self.name = 'Lajos'
+        self.subclass = 'Archer'
+        self.damage = '1d6+2'
+        self.defense = '4'
+
+class Enemy:
+    def __init__(self):
+        self.name = 'Goblin'
+        self.subclass = 'Archer'
+        self.damage = '1d6+2'
+        self.defense = '4'
+
 
 app = Flask(__name__)
 app.config['TEMPLATE_AUTO_RELOAD'] = True
@@ -13,6 +29,19 @@ def index():
 @app.route('/combat', methods=['GET'])
 def combat():
     return str(damage_calc())
+
+@app.route('/class_setup', methods=['POST', 'GET'])
+def setup():
+    return render_template('setup.html',
+                           classes=[Player() for _ in range(4)],
+                           nav_title='Welcome.'
+                        )
+
+@app.route('/class/<class_name>', methods=['POST', 'GET'])
+def return_class(class_name):
+    return class_name
+
+
 ai_response = {
     'page_title': 'Usually referring to the current story arc or location',
     'chapter': {

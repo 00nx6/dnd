@@ -14,8 +14,6 @@ class Enemy:
         self.damage = '1d6+2'
         self.defense = '4'
 
-
-
 player = Player()
 enemy = [Enemy() for _ in range(4)]
 
@@ -28,3 +26,5 @@ def damage_calc():
         damage += int(base)
     return damage
 
+def combat_flow():
+    pass

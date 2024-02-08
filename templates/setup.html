@@ -3,23 +3,7 @@
 {% block title %}Intro{% endblock title %}
 
 {% block body %}
-    <header>
-        <nav class="nav_cont">
-            <h2 class="knock_off">
-                <span>knock off</span>
-                <span>dnd</span>
-            </h2>
-            <h2 class="nav_title"> {{ nav_title }}</h2>
-            <ul class="item_cont">
-                <li class="nav_items">
-                    <a href="/" class="nav_item">home</a>
-                </li>
-                <li class="nav_items">
-                    <a href="/new_game" class="nav_item">new game</a>
-                </li>
-            </ul>
-        </nav>
-    </header>
+    {% block nav_title %} Welcome. {% endblock nav_title %}
     <main>
         {% for class in classes %}
             <div class="class_cont">
