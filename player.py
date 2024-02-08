@@ -1,33 +1,53 @@
 from random import randint
-from weapon import Weapon
-
+from weapon import player_weapons
+        
 class Player:
-    def __init__(self, weapons: list[Weapon], name: str, player_class: str, is_npc: bool) -> None:
+    def __init__(self, weapons, name: str, subclass: str, is_npc: bool) -> None:
         self.__is_npc = is_npc
         self.__weapons = weapons
-        self.__weapon = weapons[0]
-        self.__name = name
+        self.__class = subclass
+        # placeholder
+        self.weapon, self.damage, self.modifier = player_weapons()[subclass]['level 1'].values()
+        
+        # self.__weapon = weapons[0]
+        self.name = name
         self.__level = 1
 
-        match player_class.lower():
+        match subclass.lower():
             case 'fighter':
-                self.__health = 10
+                self.health = 10
+                self.defense = 2
             case 'rogue':
-                self.__health = 8
+                self.health = 8
+                self.defense = 1
             case 'mage':
-                self.__health = 6
+                self.health = 6
+                self.defense = 0
             case 'barbarian':
-                self.__health = 12
+                self.health = 12
+                self.defense = 0
             case _:
-                self.__health = 0
-        self.__current_health = self.__health
+                self.health = 0
+                self.defense = 0
+
+        self.current_health = self.health
+
+    def __str__(self):
+        return f'{self.__weapons}'
+
 
     def attack(self, targets, target=None):
+        """_summary_
+
+        Args:
+            targets (list): List of monsters in combat
+            target (object, optional): Attack aimed at by the user. Defaults to None.
+        """
         damage = 0
         dice = self.__weapon.get('dice', '1d4').split('d') # type: ignore
 
         for _ in range(1, int(dice[0])):
-            damage += randint(1, dice[1])
+            damage += randint(1, int(dice[1]))
 
         damage += self.__weapon.get('modifier', 0) # type: ignore
 
@@ -42,21 +62,38 @@ class Player:
     
     def level_up(self):
         self.__level += 1
-        self.__weapon = self.__weapons[self.__level-1]
+        self.defense += 1
+
+        match self.__class.lower():
+            case 'fighter':
+                self.health += 10
+            case 'rogue':
+                self.health += 8
+            case 'mage':
+                self.health += 6
+            case 'barbarian':
+                self.health += 12
+            case _:
+                self.health = 0
+        
+        weapon_string = f"level {self.__level}"
+        self.__weapon = self.__weapons.get(weapon_string, 'level 1') # type: ignore
 
     def take_damage(self, damage: int):
-        self.__current_health -= damage
+        if (damage - self.defense) <= 0:
+            return
+        self.__current_health -= (damage - self.defense)
         # return if health is below / equals 0?
+    
+    def heal_to_full(self):
+        self.__current_health = self.health
 
     def get_current_health(self):
         return self.__current_health
     
     def get_max_health(self):
-        return self.__health
-    
-    def heal_to_full(self):
-        self.__current_health = self.__health
+        return self.health
 
-
-
+    def get_name(self):
+        return self.__name
 

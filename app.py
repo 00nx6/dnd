@@ -1,27 +1,7 @@
-from flask import Flask, render_template
-# from random import randint
+from flask import Flask, render_template, redirect
 import combat as c
-
-
-class Player:
-    def __init__(self):
-        self.name = 'Lajos'
-        self.subclass = 'Archer'
-        self.damage = '1d6+2'
-        self.defense = '4'
-        self.hp = 12
-
-class Enemy:
-    def __init__(self):
-        self.name = 'Goblin'
-        self.subclass = 'Archer'
-        self.damage = '1d6+2'
-        self.defense = '2'
-        self.hp = 10
-
-    def sustain_damage(self):
-        self.hp -= c.damage_calc(player=Player())
-
+from player import Player as Pr
+from weapon import player_weapons
 
 app = Flask(__name__)
 app.config['TEMPLATE_AUTO_RELOAD'] = True
@@ -33,23 +13,28 @@ def index():
 
 @app.route('/combat', methods=['GET'])
 def combat():
+    """"""
+    player = Pr(weapons=player_weapons().get('Fighter'), name='Lajos', is_npc=False, subclass='Fighter')
+    team = []
+    for _ in range(4):
+        team.append(player)
+        
+    """"""
     return render_template('combat.html',
-                           enemies=[Enemy() for _ in range(4)],
-                           team=[Player() for _ in range(4)],
-                           npcs=[Player() for _ in range(3)],
-                           player=Player()
+                           enemies=team,
+                           npcs=team[:3],
+                           player=player
                     )
                            
 
 @app.route('/combat/<enemy>')
 def enemy_selection(enemy):
-    damage = c.damage_calc()
-    return render_template('combat.html')
+    return redirect('/')
 
 @app.route('/class_setup', methods=['POST', 'GET'])
 def setup():
     return render_template('setup.html',
-                           classes=[Player() for _ in range(4)],
+                           classes=['Archer', 'fighter', 'barbarian', 'mage'],
                            nav_title='Welcome.'
                         )
 
