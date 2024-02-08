@@ -5,6 +5,7 @@ class Player:
     def __init__(self, weapons, name: str, player_class: str, is_npc: bool) -> None:
         self.__is_npc = is_npc
         self.__weapons = weapons
+        self.__class = player_class
         # placeholder
         self.__weapons = player_weapons().get(player_class, 'Fighter')
 
@@ -55,6 +56,19 @@ class Player:
     def level_up(self):
         self.__level += 1
         self.__defense += 1
+
+        match self.__class.lower():
+            case 'fighter':
+                self.__health += 10
+            case 'rogue':
+                self.__health += 8
+            case 'mage':
+                self.__health += 6
+            case 'barbarian':
+                self.__health += 12
+            case _:
+                self.__health = 0
+        
         weapon_string = f"level {self.__level}"
         self.__weapon = self.__weapons.get(weapon_string, 'level 1') # type: ignore
 
