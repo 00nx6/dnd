@@ -3,23 +3,7 @@
 {% block title %}Intro{% endblock title %}
 
 {% block body %}
-    <header>
-        <nav class="nav_cont">
-            <h2 class="knock_off">
-                <span>knock off</span>
-                <span>dnd</span>
-            </h2>
-            <h2 class="nav_title"> {{ nav_title }}</h2>
-            <ul class="item_cont">
-                <li class="nav_items">
-                    <a href="/" class="nav_item">home</a>
-                </li>
-                <li class="nav_items">
-                    <a href="/new_game" class="nav_item">new game</a>
-                </li>
-            </ul>
-        </nav>
-    </header>
+    {% block nav_title %} Welcome. {% endblock nav_title %}
     <main>
         {% for class in classes %}
             <div class="class_cont">
@@ -31,23 +15,24 @@
                             <li class="stat_cont">
                                 <h3 class="stat">{{ class['hp'] }}</h3>
                                 <hr>
-                                <img src="../static/courser.png" alt="../">
+                                <img src="../static/setup_img/health-care.png" alt="../">
                             </li>
                             <li class="stat_cont">
                                 <h3 class="stat"> 42 </h3>
                                 <hr>
-                                <img src="../static/courser.png" alt="">
+                                <img src="../static/setup_img/shield.png" alt="">
                             </li>
                             <li class="stat_cont">
                                 <h3 class="stat"> 12 </h3>
                                 <hr>
-                                <img src="../static/courser.png" alt="">
+                                <img src="../static/setup_img/sword.png" alt="">
                             </li>
                         </ul>
                     </div>
                 </div>
-                
-                <button>Select</button>
+                <button>
+                    <a href="/class/ {{class['name'] }}">Select</a>
+                </button>
             </div>
         {% endfor %}
     </main>

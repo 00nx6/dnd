@@ -1,49 +1,45 @@
-from flask import Flask, render_template, request, redirect
-from random import randint
+from flask import Flask, render_template
+# from random import randint
+from combat import damage_calc
+
+
+class Player:
+    def __init__(self):
+        self.name = 'Lajos'
+        self.subclass = 'Archer'
+        self.damage = '1d6+2'
+        self.defense = '4'
+
+class Enemy:
+    def __init__(self):
+        self.name = 'Goblin'
+        self.subclass = 'Archer'
+        self.damage = '1d6+2'
+        self.defense = '4'
+
 
 app = Flask(__name__)
-
 app.config['TEMPLATE_AUTO_RELOAD'] = True
+
+
+@app.route('/', methods=['GET'])
+def index():
+    return 'hello'
+
+@app.route('/combat', methods=['GET'])
+def combat():
+    return str(damage_calc())
 
 @app.route('/class_setup', methods=['POST', 'GET'])
 def setup():
     return render_template('setup.html',
-                           classes=[SubClass(), SubClass(), SubClass(), SubClass()],
-                           nav_title='Welcome.')
-                           
+                           classes=[Player() for _ in range(4)],
+                           nav_title='Welcome.'
+                        )
 
-class SubClass:
-    def __init__(self):
-        self.hp = 12
-        self.name = 'Archer'
-        self.img_src = '../static/courser.png'
-
-def main():
-    pass
-
-if __name__ == '__main__':
-    main()
-
-"""
-what i have so far for the prompt:
-
-I have created a dictionary to store information for a DND like story game, the contents of this will be used according to the comments left in the dictionary. you will return it in the exact same format.
-
-Here is a bit more information about the contents and how it has to be populated:
-the `page_title` refers to a main title that will be displayed at the top of the screen, the next obj in the list will have most of the information,
-the title will refer to the current chapter title,
-description will be where the story is portrayed.
-When there is a`variable_type: int` given as a value, the expected value will be returned as a single int for that entry.
-When there is a `format`, it should be a string in the format provided. Otherwise everything will be explained in the comments in the dictionary. I will paste it after this message. Populate it as if we were playing an actual game of DND and thats how you stored the information.
-
---dict
-
-the entries 'enemies' , 'friendly_npc'  and 'interact'  only need to be populated when they are a part of the story, so when youre talking to an character, they should be in the friendly_npc list, or if youre in battle the enemies youre fighting should be in the enemies list or if there are no items mentioned in the story the `interact` section should be left empty. Only populate `enemies`, `friendly_npc` and `interact` when the entries were mentioned by name in the story.
-
-you will populate it as if you were a game master in this game and this is how you stored the information
-
-from this point on i will only enter one of the options provided in the main story, can you keep generating dictionaries based on the options i pick?
-"""
+@app.route('/class/<class_name>', methods=['POST', 'GET'])
+def return_class(class_name):
+    return class_name
 
 
 ai_response = {
@@ -109,7 +105,6 @@ ai_response = {
         # should be used in exploration parts of the story
         # can be left blank in combat situations/exploration situations
         # only populate if mentioned by name in the story
-        
         'interact': [
             {
                 'name': 'chest',
@@ -123,4 +118,33 @@ ai_response = {
         ]
     }
 }
+
+
+
+def main():
+    pass
+
+if __name__ == '__main__':
+    main()
+
+"""
+what i have so far for the prompt:
+
+I have created a dictionary to store information for a DND like story game, the contents of this will be used according to the comments left in the dictionary. you will return it in the exact same format.
+
+Here is a bit more information about the contents and how it has to be populated:
+the `page_title` refers to a main title that will be displayed at the top of the screen, the next obj in the list will have most of the information,
+the title will refer to the current chapter title,
+description will be where the story is portrayed.
+When there is a`variable_type: int` given as a value, the expected value will be returned as a single int for that entry.
+When there is a `format`, it should be a string in the format provided. Otherwise everything will be explained in the comments in the dictionary. I will paste it after this message. Populate it as if we were playing an actual game of DND and thats how you stored the information.
+
+--dict
+
+the entries 'enemies' , 'friendly_npc'  and 'interact'  only need to be populated when they are a part of the story, so when youre talking to an character, they should be in the friendly_npc list, or if youre in battle the enemies youre fighting should be in the enemies list or if there are no items mentioned in the story the `interact` section should be left empty. Only populate `enemies`, `friendly_npc` and `interact` when the entries were mentioned by name in the story.
+
+you will populate it as if you were a game master in this game and this is how you stored the information
+
+from this point on i will only enter one of the options provided in the main story, can you keep generating dictionaries based on the options i pick?
+"""
 

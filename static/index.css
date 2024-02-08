@@ -1,10 +1,11 @@
 :root {
     --text_color: #D0DDD7;
-    --standout_bg: #aea49e;
-    --base_bg: #84766b;
-    --dark_brown: #594336;
-    --darker_brown: #2F2504;
-
+    --darker-green: #183a37;
+    --soft-yellow: #efd6ac;
+    --blood-orange: #c44900;
+    --darker-brown: #432534;
+    --off-white: rgb(190, 190, 190); 
+    --off-black: #04151f;
     --base_font: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
@@ -28,7 +29,8 @@ li, a {
     align-items: center;
     height: 7dvh;
     padding: 1rem 3rem;
-    background-color: var(--standout_bg);
+    background-color: var(--off-black);
+    color: var(--off-white);
 }
 .item_cont {
     display: flex;
@@ -47,7 +49,6 @@ li, a {
 .knock_off {
     display: flex;
     flex-direction: column;
-    border-left: 2px var(--base_bg) solid;
     padding-left: .5rem;
     font-size: 1.25rem;
 }
@@ -55,13 +56,13 @@ li, a {
 /* Class selection */
 main {
     height: 93dvh;
-    background-color: var(--base_bg);
+    background-color: var(--soft-yellow);
     display: flex;
     justify-content: space-evenly;
     align-items: center;
 }
 .class_cont {
-    background-color: var(--standout_bg);
+    background-color: var(--text_color);
     height: fit-content;
     display: flex;
     justify-content: center;
@@ -69,14 +70,28 @@ main {
     flex-direction: column;
     transition: all .4s ease-in-out;
     width: 20rem;
-    padding: .5rem;
-    border-radius: .5rem;
+    padding: 1rem;
+    border-radius: 2.5rem;
+
 }
 .class_cont:hover {
     scale: 1.25;
+    box-shadow: 2px 0 1rem .1rem var(--off-black);
+}
+.stats {
+    padding-block: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.stats > h2 {
+    text-align: center;
 }
 .class_cont > img {
     max-width: 18rem;
+    background-color: var(--darker-green);
+    border-radius: 2rem;
+    padding: 1.5rem;
 }
 .stats_list > ul {
     display: flex;
@@ -86,6 +101,35 @@ main {
     max-width: 2rem;
     display: flex;
 }
+.stat_cont {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: .5rem;
+    background-color: #183a3733;
+    border-radius: 1rem;
+    gap: .25rem;
+}
+.stat_cont > hr {
+    height: 100%;
+    border: none;
+    background-color: black;
+    width: 1px;
+    height: 100%;
+}
 
+.stats_list > ul {
+    display: flex;
+    gap: 2rem;
+}
 
+.class_cont > button {
+    background-color: var(--darker-green);
+    border: none;
+    padding: .5rem 1rem;
+    color: var(--text_color);
+}
+.class_cont > button > a {
+    font-size: 1.25rem;
 
+}
