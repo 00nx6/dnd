@@ -51,8 +51,8 @@ li, a {
 .knock_off {
     display: flex;
     flex-direction: column;
-    padding-left: .5rem;
     font-size: 1.25rem;
+    padding-left: .5rem;
 }
 
 /* Class selection */

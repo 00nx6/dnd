@@ -10,8 +10,8 @@ class Player:
 class Enemy:
     def __init__(self):
         self.name = 'Goblin'
-        self.subclass = 'Archer'
         self.damage = '1d6+2'
+        self.subclass = 'Archer'
         self.defense = '4'
 
 player = Player()
