@@ -20,6 +20,7 @@ class Player:
                 self.__health = 12
             case _:
                 self.__health = 0
+
         self.__current_health = self.__health
 
     def attack(self, targets, target=None):
@@ -47,16 +48,18 @@ class Player:
     def take_damage(self, damage: int):
         self.__current_health -= damage
         # return if health is below / equals 0?
+    
+    def heal_to_full(self):
+        self.__current_health = self.__health
 
     def get_current_health(self):
         return self.__current_health
     
     def get_max_health(self):
         return self.__health
-    
-    def heal_to_full(self):
-        self.__current_health = self.__health
 
+    def get_name(self):
+        return self.__name
 
 
 
