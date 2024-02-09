@@ -27,11 +27,11 @@
             {% endif %}
 
             <!-- enemy options -->
-            {% if 'story_actions' in res['chapter']|keys %}
+            {% if res['chapter']['story_actions']['enemy_option'] %}
                 <ul class="options enemy">
                     {% for option in res['chapter']['story_actions']['enemy_option'] %}
                     <li class="options_item">
-                        <a href="/story/{{ option }}"> {{ option }}</a>
+                        <a href="/story/combat"> {{ option }}</a>
                     </li>
                     {% endfor %}
                 </ul>
@@ -57,6 +57,7 @@
     -->
     {% block team %}
        {{ super() }} 
+
     {% endblock team %}
 </main>
 {% endblock body %}
