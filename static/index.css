@@ -117,6 +117,10 @@ main.index > form > button {
     position: relative;
 }
 
+#help:hover {
+    cursor: pointer;
+}
+
 
 /* class setup */
 /* flex-cont */

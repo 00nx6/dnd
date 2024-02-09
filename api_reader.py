@@ -19,6 +19,7 @@ class ResponseHandler:
     def __init__(self, ai_response: dict) -> None:
         self.__title = ai_response.get('page_title', 'title')
         self.__chapter = ai_response.get('chapter', {'title': '', 'story': '', 'enemies': []})
+        self.__ai_response = ai_response
 
     def get_title(self):
         return self.__title
@@ -34,4 +35,7 @@ class ResponseHandler:
     
     def get_chapter_enemies(self):
         return self.__chapter.get('enemies', '')
+    
+    def get_ai_response(self):
+        return self.__ai_response
 

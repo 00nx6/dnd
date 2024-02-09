@@ -72,6 +72,22 @@ response = openai.chat.completions.create(
     ],
 )
 
+def get_opener():
+    return ResponseHandler(json.loads(str(response.choices[0].message.content)))
+
+def get_next_chapter(level: int):
+    if level == 6:
+        return None
+
+    response = openai.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": f"We defeated the enemy and became level {level}, give us the next chapter of the story and new enemies. Here's an example response: {json.dumps(ai_response)}. Make sure you respond with only a valid JSON object."}
+        ],
+    )
+    return ResponseHandler(json.loads(str(response.choices[0].message.content)))
+        
+
 if __name__ == "__main__":
     print(response)
 
