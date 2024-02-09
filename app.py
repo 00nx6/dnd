@@ -34,12 +34,13 @@ def return_class(user_info):
         user_info (str): string containing user name, and player class, format: subclass=Rogue;user_name=Lajos;
 
     Returns:
-        _type_: _description_
+        redirect: redirects to story
     """
     if not user_info.startswith('subclass='):
         redirect('/')
     
     player_class, user_name = (value.split('=')[-1] for value in user_info.rstrip(';').split(';'))
+
     
     player = Pr(name=user_name, subclass=player_class)
     npcs = [Pr(name=npc_class['subclass'], subclass=npc_class['subclass']) for npc_class in gen_lvl1_info(player_class)]
@@ -50,7 +51,7 @@ def return_class(user_info):
 def story():
     player = request.args.get('player')
     npcs = request.args.get('npcs')
-    print(npcs, player)
+
     return render_template('story.html', res=ai_response)
 
 @app.route('/combat', methods=['GET'])
@@ -79,10 +80,10 @@ ai_response = {
                 ],
             'enemy_option': [
                 'example: attack enemy', 'example: loot corpse'
-            ],
+                ],
             'entity_options': [
                 'example: pull lever', 'example: open chest'
-            ]
+                ]
         },
         # list of enemies in combat with
         # only populate if mentioned by name in the story

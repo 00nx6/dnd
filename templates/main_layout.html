@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/index.css">
+    {% block script %}{% endblock script %}
+    <title> 
+        {% block title%}
+            Title 
+        {% endblock title %}
+    </title>
+</head>
+<body>
+
+    <header>
+        <nav class="nav_cont">
+            <h2 class="knock_off">
+                <span>knock off</span>
+                <span>dnd</span>
+            </h2>
+            <h2 class="nav_title">
+                {% block nav_title %}  {% endblock nav_title %}
+            </h2>
+            <ul class="item_cont">
+                <li class="nav_items">
+                    <a href="/" class="nav_item">home</a>
+                </li>
+                <li class="nav_items">
+                    <a href="/new_game" class="nav_item">new game</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+{% block body %}    
+    {% block team %}
+    
+    {% endblock team %}
+
+{% endblock body %}
+</body>
+</html>
