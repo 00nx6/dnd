@@ -54,7 +54,7 @@ def combat():
                            
 
 @app.route('/combat/<enemy>')
-def enemy_selection(enemy):
+def enemy_selection(enemy):  # noqa: ARG001
     return render_template('combat.html')
 
 
