@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, request, url_for
 from player import Player as Pr
 from player import gen_lvl1_info, return_class_name_list
 from combat_handler import CombatHandler
-from api_reader import ResponseHandler # Use for enemies/story/etc
+import openAI
 
 game_cont = {}
 game_content = {}
@@ -63,13 +63,26 @@ def story():
 
     game_content['player'] = player_class
     game_content['npcs'] = npcs
-    #game_content['enemies'] = ResponseHandler.get_chapter_enemies(ai_response)
+
+    response = None
+    if 'ongoing' in game_content:
+        response = openAI.get_next_chapter(player_class.level)
+    else:
+        response = openAI.get_opener()
+        game_content['ongoing'] = True
+    
+    if response is None:
+        game_content['enemies'] = []
+        resp = {}
+    else:
+        game_content['enemies'] = response.get_chapter_enemies()
+        resp = response.get_ai_response()
 
     return render_template('story.html',
-                           res=ai_response,
+                           res=resp,
                            player_class=player_class,
                            npcs=npcs,
-                           nav_title=ai_response['chapter']['title']
+                           nav_title=resp['chapter']['title']
                            )
 
 @app.route('/combat', methods=['GET'])
