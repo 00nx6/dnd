@@ -3,41 +3,42 @@ from openai import OpenAI # `poetry add openai`
 import json
 from weapon import player_weapons
 
-
-from monster import Monster
 from api_reader import ResponseHandler
 
-# Configure the OpenAI API to work through our server (for payment credits)
-openai = OpenAI(
-    api_key="dldr7bh6dp55",
-    base_url="https://openai.sd42.nl/api/providers/openai/v1"
-)
+class OpenAIInterpreter:
+    def __init__(self) -> None:
 
-ai_response = {
-    'page_title': 'Usually referring to the current story arc or location',
-    'chapter': {
-        # will be displayed to the user.
-        'title': 'current story chapter',
-        # contains a short story
-        'story': 'max 150 words',
-        # options to move forward in the story.
-        # list of enemies in combat with
-        # only populate if mentioned by name in the story
-        'enemies': [
-            {
-                'enemy_name': 'Variable_type: text',
-                'health': 'variable_type: int',
-                'defense': 'Variable_type: int',
-                'damage': 'format: 1d6+2, Variable_type:string'
-            },
-            # ...
-        ]
-    }
-}
+        # Configure the OpenAI API to work through our server (for payment credits)
+        self.openai = OpenAI(
+            api_key="dldr7bh6dp55",
+            base_url="https://openai.sd42.nl/api/providers/openai/v1"
+        )
+
+        self.ai_response = {
+            'page_title': 'Usually referring to the current story arc or location',
+            'chapter': {
+                # will be displayed to the user.
+                'title': 'current story chapter',
+                # contains a short story
+                'story': 'max 150 words',
+                # options to move forward in the story.
+                # list of enemies in combat with
+                # only populate if mentioned by name in the story
+                'enemies': [
+                    {
+                        'enemy_name': 'Variable_type: text',
+                        'health': 'variable_type: int',
+                        'defense': 'Variable_type: int',
+                        'damage': 'format: 1d6+2, Variable_type:string'
+                    },
+                    # ...
+                ]
+            }
+        }
 
 
 
-prompt = f"""
+        self.prompt = f"""
 I have created a dictionary to store information for a DND like story game, the contents of this will be used according to the comments left in the dictionary. you will return it in the exact same format.
 
 Here is a bit more information about the contents and how it has to be populated:
@@ -59,76 +60,76 @@ These are the possible weapons:
 
 Here's an example response:
 
-{json.dumps(ai_response)}
+{json.dumps(self.ai_response)}
 
 Make sure you respond with only a valid JSON object.
 """
 
-# Ask the LLM for a joke
-response = openai.chat.completions.create(
-    model="gpt-3.5-turbo",
-    messages=[
-        {"role": "system", "content": prompt}
-    ],
-)
-
-def get_opener():
-    return ResponseHandler(json.loads(str(response.choices[0].message.content)))
-
-def get_next_chapter(level: int):
-    if level == 6:
-        return None
-
-    response = openai.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": f"We defeated the enemy and became level {level}, give us the next chapter of the story and new enemies. Here's an example response: {json.dumps(ai_response)}. Make sure you respond with only a valid JSON object."}
-        ],
-    )
-    return ResponseHandler(json.loads(str(response.choices[0].message.content)))
-        
-
-if __name__ == "__main__":
-    print(response)
-
-    response_handled = json.loads(str(response.choices[0].message.content))
-
-
-    # {
-    #     "enemy_name": "Wolf Pack",
-    #     "health": 20,
-    #     "defense": 2,
-    #     "damage": "1d6+2"
-    # }
-
-    r = ResponseHandler(response_handled)
-    for enemy in r.get_chapter_enemies():
-        m = Monster(enemy.get('enemy_name', "ERR"), enemy.get('health', '0'), enemy.get('defense', '99'), enemy.get('damage', '99d100+99999'))
-        print(m.get_defense())
-        i = 0
-
-    input("Win")
-    level = 1
-    while True:
-        level += 1
-        if level == 6:
-            break
-
-        response = openai.chat.completions.create(
+        # Ask the LLM for a joke
+        self.response = self.openai.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": f"We defeated the enemy and became level {level}, give us the next chapter of the story and new enemies. Here's an example response: {json.dumps(ai_response)}. Make sure you respond with only a valid JSON object."}
+                {"role": "system", "content": self.prompt}
             ],
         )
 
-        response_handled = json.loads(str(response.choices[0].message.content))
-        r = ResponseHandler(response_handled)
-        for enemy in r.get_chapter_enemies():
-            m = Monster(enemy.get('enemy_name', "ERR"), enemy.get('health', '0'), enemy.get('defense', '99'), enemy.get('damage', '99d100+99999'))
-            print(m.get_defense())
-            i = 0
+    def get_opener(self):
+        return ResponseHandler(json.loads(str(self.response.choices[0].message.content)))
+
+    def get_next_chapter(self, level: int):
+        if level == 6:
+            return None
+
+        self.response = self.openai.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": f"We defeated the enemy and became level {level}, give us the next chapter of the story and new enemies. Here's an example response: {json.dumps(self.ai_response)}. Make sure you respond with only a valid JSON object."}
+            ],
+        )
+        return ResponseHandler(json.loads(str(self.response.choices[0].message.content)))
+            
+
+# if __name__ == "__main__":
+#     print(response)
+
+#     response_handled = json.loads(str(response.choices[0].message.content))
+
+
+#     # {
+#     #     "enemy_name": "Wolf Pack",
+#     #     "health": 20,
+#     #     "defense": 2,
+#     #     "damage": "1d6+2"
+#     # }
+
+#     r = ResponseHandler(response_handled)
+#     for enemy in r.get_chapter_enemies():
+#         m = Monster(enemy.get('enemy_name', "ERR"), enemy.get('health', '0'), enemy.get('defense', '99'), enemy.get('damage', '99d100+99999'))
+#         print(m.get_defense())
+#         i = 0
+
+#     input("Win")
+#     level = 1
+#     while True:
+#         level += 1
+#         if level == 6:
+#             break
+
+#         response = openai.chat.completions.create(
+#             model="gpt-3.5-turbo",
+#             messages=[
+#                 {"role": "system", "content": f"We defeated the enemy and became level {level}, give us the next chapter of the story and new enemies. Here's an example response: {json.dumps(ai_response)}. Make sure you respond with only a valid JSON object."}
+#             ],
+#         )
+
+#         response_handled = json.loads(str(response.choices[0].message.content))
+#         r = ResponseHandler(response_handled)
+#         for enemy in r.get_chapter_enemies():
+#             m = Monster(enemy.get('enemy_name', "ERR"), enemy.get('health', '0'), enemy.get('defense', '99'), enemy.get('damage', '99d100+99999'))
+#             print(m.get_defense())
+#             i = 0
     
-        input("Win")
+#         input("Win")
 # joke = response.choices[0].message.content
 # print(joke)
 

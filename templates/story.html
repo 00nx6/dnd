@@ -27,7 +27,7 @@
             {% endif %}
 
             <!-- enemy options -->
-            {% if res['chapter']['story_actions']['enemy_option'] %}
+            {% if 'story_actions' in res['chapter']|keys %}
                 <ul class="options enemy">
                     {% for option in res['chapter']['story_actions']['enemy_option'] %}
                     <li class="options_item">

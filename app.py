@@ -2,10 +2,12 @@ from flask import Flask, render_template, redirect, request, url_for
 from player import Player as Pr
 from player import gen_lvl1_info, return_class_name_list
 from combat_handler import CombatHandler
-import openAI
+from openAI import OpenAIInterpreter
 
 
 game_content = {}
+
+ai_interpreter = OpenAIInterpreter()
 
 app = Flask(__name__)
 app.config['TEMPLATE_AUTO_RELOAD'] = True
@@ -66,9 +68,9 @@ def story():
 
     response = None
     if 'ongoing' in game_content:
-        response = openAI.get_next_chapter(player_class.level)
+        response = ai_interpreter.get_next_chapter(player_class.level)
     else:
-        response = openAI.get_opener()
+        response = ai_interpreter.get_opener()
         game_content['ongoing'] = True
     
     if response is None:
@@ -77,7 +79,7 @@ def story():
     else:
         game_content['enemies'] = response.get_chapter_enemies()
         resp = response.get_ai_response()
-
+    print(resp)
     return render_template('story.html',
                            res=resp,
                            player_class=player_class,
@@ -100,6 +102,8 @@ def enemy_selection(enemy):
     game_content['enemies'] = results.get('enemies', '')
     return render_template('combat.html')
 
+if __name__ == '__main__':
+    app.run(debug=True)
 
 
 ai_response = {
