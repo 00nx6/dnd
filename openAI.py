@@ -4,9 +4,12 @@ import json
 from weapon import player_weapons
 
 
+from monster import Monster
+from api_reader import ResponseHandler
+
 # Configure the OpenAI API to work through our server (for payment credits)
 openai = OpenAI(
-    api_key="YOUR_TOKEN_GOES_HERE", # dldr7bh6dp55
+    api_key="dldr7bh6dp55",
     base_url="https://openai.sd42.nl/api/providers/openai/v1"
 )
 
@@ -52,7 +55,7 @@ the monster damage health and defense is based on these weapons, in one round of
 
 These are the possible weapons:
 
-{json.dumps(player_weapons)}
+{json.dumps(player_weapons())}
 
 Here's an example response:
 
@@ -71,6 +74,32 @@ response = openai.chat.completions.create(
 
 if __name__ == "__main__":
     print(response)
+
+    response_handled = json.loads(str(response.choices[0].message.content))
+
+
+    # {
+    #     "enemy_name": "Wolf Pack",
+    #     "health": 20,
+    #     "defense": 2,
+    #     "damage": "1d6+2"
+    # }
+
+    r = ResponseHandler(response_handled)
+    for enemy in r.get_chapter_enemies():
+        m = Monster(enemy.get('enemy_name', "ERR"), enemy.get('health', '0'), enemy.get('defense', '99'), enemy.get('damage', '99d100+99999'))
+        print(m.get_defense())
+        i = 0
+
+    input("Win")
+    # round 2
+    input("Win")
+    # round 3
+    input("Win")
+    # round 4
+    input("Win")
+    # round 5
+    input("Win")
 # joke = response.choices[0].message.content
 # print(joke)
 
