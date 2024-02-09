@@ -49,7 +49,8 @@ class Player:
         self.__current_health = self.health
         if name == subclass:
             self.is_npc = True
-
+        
+        
     def __str__(self) -> str:
         return f'{self.name, self.subclass, self.level}'
 
