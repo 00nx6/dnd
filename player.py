@@ -1,6 +1,5 @@
 from random import randint
 from weapon import player_weapons
-from monster import Monster
 
 # needed for rendering
 def return_class_name_list():
@@ -51,7 +50,7 @@ class Player:
         if name == subclass:
             self.is_npc = True
 
-    def attack(self, targets: list[Monster], target=None):
+    def attack(self, targets, target=None):
         damage = 0
         dice = self.__weapon.get('dice', '1d4').split('d') # type: ignore
 
@@ -61,9 +60,11 @@ class Player:
         damage += self.__weapon.get('modifier', 0) # type: ignore
 
         if self.is_npc:
-            target = targets[randint(0, len(targets))]
-            target.take_damage(damage)
-            return
+            while True:
+                target = targets[randint(0, len(targets))]
+                if target.get_hp() > 0:
+                    target.take_damage(damage)
+                    return
         if target is None:
             return
         target.take_damage(damage)
@@ -90,6 +91,8 @@ class Player:
         self.__current_health = self.health
 
     def get_current_health(self):
+        if self.__current_health is None:
+            return 0
         return self.__current_health
     
     def get_max_health(self):

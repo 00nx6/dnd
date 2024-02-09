@@ -25,7 +25,18 @@ class CombatHandler:
         for enemy in self.enemies:
             enemy.attack(self.enemy_targets)
 
+    def initiate_combat_round(self):
+        self.activate_npcs()
+        self.activate_enemies()
 
+        for enemy in self.enemies[:]:
+            if enemy.get_hp() >= 0:
+                self.enemies.remove(enemy)
+    
+    def end_combat(self):
+        for character in self.enemy_targets:
+            character.level_up()
+            character.heal_to_full()
 
 
 

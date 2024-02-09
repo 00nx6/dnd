@@ -1,5 +1,4 @@
 from random import randint
-from player import Player
 
 class Monster:
     def __init__(self, name, hp, defense, weapon) -> None:
@@ -33,7 +32,7 @@ class Monster:
             return
         self.__hp -= (damage - self.__defense)
 
-    def attack(self, targets: list[Player]):
+    def attack(self, targets):
         damage = 0
         dice = self.__weapon_dice.split('d')
 
@@ -42,6 +41,9 @@ class Monster:
 
         damage += self.__weapon_bonus
 
-        target = targets[randint(0, len(targets))]
+        while True:
+            target = targets[randint(0, len(targets))]
+            if target.get_current_health() > 0:
+                break
         target.take_damage(damage)
 
