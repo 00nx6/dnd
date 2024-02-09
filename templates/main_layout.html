@@ -76,43 +76,31 @@
             </div>
         </div>
         <div class="npc_wrapper">
-            {% for npc in npcs %}
+            {% for enemy in sub_enemies %}
                 <div class="class_wrapper">
-                    <img src="../static/{{npc['subclass']|lower}}.png" alt="">
-                    <h2 class="subclass"> {{ npc.subclass }}</h2>
+                    <img src="../static/{{enemy['subclass']|lower}}.png" alt="">
+                    <h2 class="subclass"> {{ enemy.enemy_name }}</h2>
                     <div class="stats_cont">
                         <ul>
                             <li>
                                 <img src="../static/setup_img/health-care.png" alt="">
                                 <hr>
                                 <p>
-                                    <span class="strong">{{ npc.health }}</span>
+                                    <span class="strong">{{ enemy.health }}</span>
                                 </p>
                             </li>
                             <li>
                                 <img src="../static/setup_img/shield.png" alt="">
                                 <hr>
                                 <p>
-                                    <span class="strong">{{ npc.defense }}</span>
+                                    <span class="strong">{{ enemy.defense }}</span>
                                 </p>
                             </li>
                             <li>
                                 <img src="../static/setup_img/sword.png" alt="">
                                 <hr>
                                 <p>
-                                    <span class="strong">{{ npc.damage }}</span>
-                                </p>
-                            </li>
-                        </ul>
-                        <ul>
-                            <li>
-                                <p>
-                                    {{ npc.weapons }}
-                                </p>
-                            </li>
-                            <li>
-                                <p>
-                                    Lvl: {{ npc.level }}
+                                    <span class="strong">{{ enemy.damage }}</span>
                                 </p>
                             </li>
                         </ul>

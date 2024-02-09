@@ -2,8 +2,10 @@ from flask import Flask, render_template, redirect, request, url_for
 from player import Player as Pr
 from player import gen_lvl1_info, return_class_name_list
 from combat_handler import CombatHandler
-from openAI import OpenAIInterpreter
+from api_call import OpenAIInterpreter
 
+# rewowrk html generation
+# remodel based on new obj
 
 game_content = {}
 
@@ -67,6 +69,7 @@ def story():
     game_content['npcs'] = npcs
 
     response = None
+
     if 'ongoing' in game_content:
         response = ai_interpreter.get_next_chapter(player_class.level)
     else:
@@ -79,18 +82,19 @@ def story():
     else:
         game_content['enemies'] = response.get_chapter_enemies()
         resp = response.get_ai_response()
-    print(resp)
+    # print(resp)
     return render_template('story.html',
                            res=resp,
                            player_class=player_class,
                            npcs=npcs,
-                           nav_title=resp['chapter']['title']
+                           nav_title=resp['page_title']
                            )
 
 @app.route('/combat', methods=['GET'])
 def combat():
     return render_template('combat.html')
-                           
+
+
 
 @app.route('/combat/<enemy>')
 def enemy_selection(enemy):

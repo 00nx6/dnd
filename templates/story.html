@@ -15,39 +15,16 @@
             </p>
         </div>
         <div class="options_cont">
-            <!-- npc options -->
-            {% if res['chapter']['story_actions']['npc_option'] %}
+            <!-- Choose target -->
+            {% if res['chapter']['enemies'] %}
                 <ul class="options npc">
-                    {% for option in res['chapter']['story_actions']['npc_option'] %}
-                    <li class="options_item">
-                        <a href="/story/{{ option }}"> {{ option }}</a>
-                    </li>
+                    {% for enemy in res['chapter']['enemies'] %}
+                        <li class="options_item">
+                            <a href="/story/{{ enemy['enemy_name'] }}"> {{ enemy['enemy_name'] }}</a>
+                        </li>
                     {% endfor %}
                 </ul>
-            {% endif %}
-
-            <!-- enemy options -->
-            {% if 'story_actions' in res['chapter']|keys %}
-                <ul class="options enemy">
-                    {% for option in res['chapter']['story_actions']['enemy_option'] %}
-                    <li class="options_item">
-                        <a href="/story/{{ option }}"> {{ option }}</a>
-                    </li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-
-            <!-- entity_options -->
-            {% if res['chapter']['story_actions']['entity_options'] %}
-                <ul class="options entity">
-                    {% for option in res['chapter']['story_actions']['entity_options'] %}
-                    <li class="options_item">
-                        <a href="/story/{{ option }}"> {{ option }}</a>
-                    </li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        
+            {% endif %}        
         </div>
     </div>
     <!-- 

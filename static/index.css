@@ -222,11 +222,10 @@ main.story > .story_cont {
 }
 .options > .options_item {
     background-color: #432534;
-    padding: .25rem .5rem;
-    min-height: 5rem;
-    min-width: 10rem;
+    padding: 1rem 1.5rem;
     font-size: 1.25rem;
     color: white;
+    text-align: center;
 }
 
 .story_cont > .options_cont {

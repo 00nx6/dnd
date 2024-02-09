@@ -1,0 +1,21 @@
+{
+  "page_title": "The Forgotten Ruins",
+  "chapter": {
+    "title": "Chapter 1: The Journey Begins",
+    "story": "You find yourself standing at the entrance of the ancient ruins, rumored to hold great treasures and unspeakable dangers. The air is thick with anticipation as you step into the darkness, torch in hand. The walls are covered in moss and the sound of dripping water echoes in the distance. Every step forward feels like a step into the unknown...",
+    "enemies": [
+      {
+        "enemy_name": "Goblin",
+        "health": 12,
+        "defense": 2,
+        "damage": "1d6+1"
+      },
+      {
+        "enemy_name": "Skeleton",
+        "health": 15,
+        "defense": 1,
+        "damage": "1d6"
+      }
+    ]
+  }
+}

@@ -1,5 +1,5 @@
-# import urllib.request
-from openai import OpenAI # `poetry add openai`
+
+from openai import OpenAI
 import json
 from weapon import player_weapons
 
