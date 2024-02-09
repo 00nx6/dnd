@@ -1,5 +1,6 @@
 from random import randint
 from weapon import player_weapons
+from monster import Monster
 
 # needed for rendering
 def return_class_name_list():
@@ -50,7 +51,7 @@ class Player:
         if name == subclass:
             self.is_npc = True
 
-    def attack(self, targets, target=None):
+    def attack(self, targets: list[Monster], target=None):
         damage = 0
         dice = self.__weapon.get('dice', '1d4').split('d') # type: ignore
 
