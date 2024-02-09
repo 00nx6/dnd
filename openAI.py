@@ -92,14 +92,27 @@ if __name__ == "__main__":
         i = 0
 
     input("Win")
-    # round 2
-    input("Win")
-    # round 3
-    input("Win")
-    # round 4
-    input("Win")
-    # round 5
-    input("Win")
+    level = 1
+    while True:
+        level += 1
+        if level == 6:
+            break
+
+        response = openai.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": f"We defeated the enemy and became level {level}, give us the next chapter of the story and new enemies. Here's an example response: {json.dumps(ai_response)}. Make sure you respond with only a valid JSON object."}
+            ],
+        )
+
+        response_handled = json.loads(str(response.choices[0].message.content))
+        r = ResponseHandler(response_handled)
+        for enemy in r.get_chapter_enemies():
+            m = Monster(enemy.get('enemy_name', "ERR"), enemy.get('health', '0'), enemy.get('defense', '99'), enemy.get('damage', '99d100+99999'))
+            print(m.get_defense())
+            i = 0
+    
+        input("Win")
 # joke = response.choices[0].message.content
 # print(joke)
 
