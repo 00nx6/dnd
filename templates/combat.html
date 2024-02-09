@@ -1,0 +1,28 @@
+{% extends "main_layout.html" %}
+
+{% block title %}{{ res['page_title'] }}{% endblock title %}
+{% block script %}
+    <script src="../static/script/options_layout.js" defer></script>
+{% endblock script %}
+
+{% block body %}
+<main class="story">
+    <div class="story_cont">
+        <div class="text_cont">
+            <h1> {{ res['chapter']['title'] }} </h1>
+            <p>
+                {{ res['chapter']['story'] }}
+            </p>
+        </div>
+    </div>
+    <!-- 
+        extends base2.html?
+        another base.html would work well because half the page on here
+        will never change.
+    -->
+    {% block team %}
+       {{ super() }} 
+
+    {% endblock team %}
+</main>
+{% endblock body %}

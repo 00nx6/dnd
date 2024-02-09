@@ -68,8 +68,6 @@ def story():
     game_content['player'] = player_class
     game_content['npcs'] = npcs
 
-    response = None
-
     if 'ongoing' in game_content:
         response = ai_interpreter.get_next_chapter(player_class.level)
     else:
@@ -82,21 +80,100 @@ def story():
     else:
         game_content['enemies'] = response.get_chapter_enemies()
         resp = response.get_ai_response()
-    # print(resp)
+
     return render_template('story.html',
                            res=resp,
                            player_class=player_class,
                            npcs=npcs,
-                           nav_title=resp['page_title']
+                           nav_title='current story chapter'
                            )
 
-@app.route('/combat', methods=['GET'])
+@app.route('/story/combat', methods=['GET'])
 def combat():
-    return render_template('combat.html')
+    response = {
+    'page_title': 'Usually referring to the current story arc or location',
+    'chapter': {
+        # will be displayed to the user.
+        'title': 'current story chapter',
+        # contains a short story
+        'story': "Welcome, brave adventurers, to the mystical realm of Eldoria, where magic and monsters reign supreme. The land is cloaked in ancient mysteries, and a palpable tension hangs in the air as unseen forces vie for control. As you step into the bustling city of Eldoria's Crossroads, a mysterious letter arrives, beckoning you to the Moonlight Citadel. Rumors of a long-lost artifact, the Astral Keystone, have surfaced, and its rediscovery could tip the balance of power in the realm. Your party, a diverse group of warriors, mages, and rogues, has been chosen by fate to embark on this perilous quest. From the shadowy Whispering Woods to the fiery depths of the Dragon's Maw, you will face formidable challenges, forge alliances, and unravel the secrets that bind Eldoria. The fate of the realm rests in your hands, and as the sun sets on the horizon, your journey into the unknown begins. May your swords stay sharp, spells true, and courage unwavering in this epic Dungeons & Dragons adventure!",
 
+        # options to move forward in the story.
+        'story_actions': {
+            'npc_option': [
+                'example: Purchase offered goods', 'example: Accept Quest'
+                ],
+            'enemy_option': [
+                'example: attack enemy', 'example: loot corpse'
+                ],
+            'entity_options': [
+                'example: pull lever', 'example: open chest'
+                ]
+        },
+        # list of enemies in combat with
+        # only populate if mentioned by name in the story
+        'enemies': [
+            {
+                'enemy_name': 'Dog',
+                'health': 20,
+                'defense': 5,
+                'damage': '1d6+2',
+                'inventory': 'weapon name',
+                'attacks': {
+                    # im still not sure how attacks work
+                    # but please fill in the blanks
+                    'attack 1': 'attack name'
+                },
+            },
+            # ...
+        ],
+        # list of friendly_npcs in the vicinity
+        # only refers to quest givers traders and usually interact-able town NPCs
+        # only populate if mentioned by name in the story
+        'friendly_npc': [
+            {
+                'name': 'variable_type; text',
+                'race': 'variable_type: text',
+                'type': 'variable_type: text, example: Elf',
+                'role': 'merchant',
+                'has_quest': 'variable_type: bool, if has quest for player true else false',
+                'items_for_sale': [
+                    'item1', 'item2'
+                ]
+            },
+            {
+                'name': 'variable_type; text',
+                'race': 'variable_type: text',
+                'type': 'variable_type: text, example: Dark Elf',
+                'role': 'Variable_type: text, example: Tyrant king of Nilfgaard',
+                'has_quest': 'variable_type: bool, if has quest for player true else false'
+                
+            }
+        ],
+        # objects that can be interacted with in the nearby vicinity
+        # should be used in exploration parts of the story
+        # can be left blank in combat situations/exploration situations
+        # only populate if mentioned by name in the story
+        'interact': [
+            {
+                'name': 'chest',
+                'type': 'object',
+            },
+            {
+                'name': 'lever',
+                'type': 'object',
+                'consequence': 'variable_type: string, example: Pull the lever and the door opens.'
+            }
+        ]
+    }
+}
+    return render_template('combat.html',
+                           res=response,
+                           player_class=game_content['player'],
+                           npcs=game_content['npcs'])
+                           
 
-
-@app.route('/combat/<enemy>')
+@app.route('/story/combat/<enemy>')
 def enemy_selection(enemy):
     ch = CombatHandler(game_content['player'], game_content['npcs'], game_content['enemies'])
     ch.player_attack(enemy)
@@ -104,7 +181,7 @@ def enemy_selection(enemy):
     game_content['player'] = results.get('player', '')
     game_content['npcs'] = results.get('npcs', '')
     game_content['enemies'] = results.get('enemies', '')
-    return render_template('combat.html')
+    return redirect('/story/combat')
 
 if __name__ == '__main__':
     app.run(debug=True)
