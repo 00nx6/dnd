@@ -68,8 +68,11 @@ response = openai.chat.completions.create(
         {"role": "system", "content": prompt}
     ],
 )
-joke = response.choices[0].message.content
-print(joke)
+
+if __name__ == "__main__":
+    print(response)
+# joke = response.choices[0].message.content
+# print(joke)
 
 
 # # Convert the joke to spoken audio and save it as an MP3 file
