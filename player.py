@@ -49,7 +49,8 @@ class Player:
         self.__current_health = self.health
         if name == subclass:
             self.is_npc = True
-
+        
+        
     def __str__(self) -> str:
         return f'{self.name, self.subclass, self.level}'
 
@@ -79,25 +80,6 @@ class Player:
         self.health, _ = class_attributes(self.subclass, self.level+1)
         self.weapons, self.damage, self.modifier = player_weapons()[self.subclass][f'level {self.level}'].values()
 
-
-        # weapon_string = f"level {self.level}"
-        # self.weapon = self.weapons.get(weapon_string, 'level 1') # type: ignore
-
-
-        # match self.subclass.lower():
-        #     case 'fighter':
-        #         self.health += 10
-        #     case 'rogue':
-        #         self.health += 8
-        #     case 'mage':
-        #         self.health += 6
-        #     case 'barbarian':
-        #         self.health += 12
-        #     case _:
-        #         pass
-
-        # weapon_string = f"level {self.level}"
-        # self.weapon = self.weapons.get(weapon_string, 'level 1') # type: ignore
 
     def take_damage(self, damage: int):
         if (damage - self.defense) <= 0:
