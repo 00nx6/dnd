@@ -4,12 +4,8 @@
 {% block script %}
     <script src="../static/script/options_layout.js" defer></script>
 {% endblock script %}
-{% block nav_title %}
-    {{ res['chapter']['title'] }}
-{% endblock nav_title %}
 
 {% block body %}
-
 <main class="story">
     <div class="story_cont">
         <div class="text_cont">
@@ -61,7 +57,7 @@
     -->
     {% block team %}
        {{ super() }} 
-       
+
     {% endblock team %}
 </main>
 {% endblock body %}
