@@ -28,8 +28,13 @@ def setup():
     
 @app.route('/class/<user_info>', methods=['GET'])
 def return_class(user_info):
-    """
-    subclass=Rogue;user_name=Lajos;
+    """_summary_
+
+    Args:
+        user_info (str): string containing user name, and player class, format: subclass=Rogue;user_name=Lajos;
+
+    Returns:
+        _type_: _description_
     """
     if not user_info.startswith('subclass='):
         redirect('/')
