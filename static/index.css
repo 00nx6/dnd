@@ -131,7 +131,7 @@ main.class_setup {
 .class_wrapper {
     background-color: var(--off-white);
     padding: .5rem;
-    border-radius: 1.5rem;
+    border-radius: 1.15rem;
     aspect-ratio: 9 / 16;
 }
 
@@ -235,18 +235,58 @@ main.story > .story_cont {
     gap: 2rem;
     overflow: hidden;
 }
+
+/* teams */
 .team_wrap {
     --cont-height:calc(100dvh - 4.75rem); 
+
     height: var(--cont-height);
     background-color: transparent;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 } 
 .team_wrap > .class_wrapper {
-    max-height: calc(var(--cont-height) - 41%);
+    max-height: calc(var(--cont-height) - 50%);
+}
+.team_wrap > .class_wrapper > img {
+    height: 15rem;
 }
 .class_wrapper > .stats_cont > ul > li {
-    text-wrap: nowrap;
-    width: fit-content;
+    width: min-content;
+    padding: .5rem .5rem;
+}
+.class_wrapper > .stats_cont > ul > li > p {
+    width: max-content;
+}
+
+
+/* npcs */
+.npc_wrapper {
+    display: flex;
+    gap: 1.5rem;
+}
+.npc_wrapper > .class_wrapper {
+    aspect-ratio: unset;
+}
+
+.npc_wrapper > .class_wrapper > img {
+    height: 10rem;
+    aspect-ratio: initial;
+    width: 100%;
+}
+.npc_wrapper > .class_wrapper > h2 {
+    font-size: 1.15rem;
+}
+.npc_wrapper > .class_wrapper > .stats_cont > ul > li {
+    width: min-content;
+    padding: .15rem .15rem;
+}
+.npc_wrapper > .class_wrapper > .stats_cont > ul > li > p {
+    width: max-content;
+}
+.npc_wrapper > .class_wrapper {
+    height: 100%;
+    width: calc((50dvw - 3rem) / 3) 
 }

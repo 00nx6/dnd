@@ -69,11 +69,56 @@
                     </li>
                     <li>
                         <p>
-                            {{ player_class.level }}
+                            Lvl: {{ player_class.level }}
                         </p>
                     </li>
                 </ul>
             </div>
+        </div>
+        <div class="npc_wrapper">
+            {% for npc in npcs %}
+                <div class="class_wrapper">
+                    <img src="../static/{{npc['subclass']|lower}}.png" alt="">
+                    <h2 class="subclass"> {{ npc.subclass }}</h2>
+                    <div class="stats_cont">
+                        <ul>
+                            <li>
+                                <img src="../static/setup_img/health-care.png" alt="">
+                                <hr>
+                                <p>
+                                    <span class="strong">{{ npc.health }}</span>
+                                </p>
+                            </li>
+                            <li>
+                                <img src="../static/setup_img/shield.png" alt="">
+                                <hr>
+                                <p>
+                                    <span class="strong">{{ npc.defense }}</span>
+                                </p>
+                            </li>
+                            <li>
+                                <img src="../static/setup_img/sword.png" alt="">
+                                <hr>
+                                <p>
+                                    <span class="strong">{{ npc.damage }}</span>
+                                </p>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li>
+                                <p>
+                                    {{ npc.weapons }}
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    Lvl: {{ npc.level }}
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
     {% endblock team %}
