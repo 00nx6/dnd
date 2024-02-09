@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% include "character_card.html" %}
+{% block title %}Intro{% endblock title %}
+
+{% block body %}
+    {% block nav_title %} Welcome. {% endblock nav_title %}
+    <main class="setup">
+        {% for class in classes %}
+            {% block card %}
+            {% endblock card %}
+        {% endfor %}
+    </main>
+{% endblock body %}

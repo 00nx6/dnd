@@ -1,0 +1,22 @@
+
+ai_response = {
+    'page_title': 'Usually referring to the current story arc or location',
+    'chapter': {
+        # will be displayed to the user.
+        'title': 'current story chapter',
+        # contains a short story
+        'story': 'max 150 words',
+        # options to move forward in the story.
+        # list of enemies in combat with
+        # only populate if mentioned by name in the story
+        'enemies': [
+            {
+                'enemy_name': 'Variable_type: text',
+                'health': 'variable_type: int',
+                'defense': 'Variable_type: int',
+                'damage': 'format: 1d6+2, Variable_type:string'
+            },
+            # ...
+        ]
+    }
+}

@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "dnd"
+version = "0.1.0"
+description = "EOQ project"
+authors = ["00nx6 <lszabo958@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+Flask = "^3.0.2"
+openai = "^1.11.1"
+
+[tool.poetry.group.dev.dependencies]
+Flask = "^3.0.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
