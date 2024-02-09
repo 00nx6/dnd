@@ -1,3 +1,5 @@
+from random import randint
+
 class Monster:
     def __init__(self, name, hp, defense, weapon) -> None:
         self.__name = name
@@ -23,4 +25,22 @@ class Monster:
     
     def get_weapon(self):
         return self.__weapon
+    
+
+    def take_damage(self, damage: int):
+        if (damage - self.__defense) <= 0:
+            return
+        self.__hp -= (damage - self.__defense)
+
+    def attack(self, targets):
+        damage = 0
+        dice = self.__weapon_dice.split('d')
+
+        for _ in range(1, int(dice[0])):
+            damage += randint(1, int(dice[1]))
+
+        damage += self.__weapon_bonus
+
+        target = targets[randint(0, len(targets))]
+        target.take_damage(damage)
 
