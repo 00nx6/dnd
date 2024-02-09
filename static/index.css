@@ -1,14 +1,15 @@
+/* general */
+
 :root {
-    --text_color: #D0DDD7;
+    --text-color: #D0DDD7;
     --darker-green: #183a37;
     --soft-yellow: #efd6ac;
     --blood-orange: #c44900;
     --darker-brown: #432534;
     --off-white: rgb(190, 190, 190); 
     --off-black: #04151f;
+    --transparent-white: rgba(255, 255, 255, 0.6);
     --base_font: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-
-    --nav-height: 7dvh;
 }
 
 * {
@@ -19,143 +20,161 @@
 }
 
 li, a {
-    text-decoration: none;
     list-style-type: none;
-    color: unset;
+    text-decoration: none;
+    color: inherit;
 }
 
-/* nav */
+
+/* base.html */
+
+header {
+    background-color: var(--darker-green);
+    padding-block: 1.5rem;
+}
 .nav_cont {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
-    height: var(--nav-height);
-    padding: 1rem 3rem;
-    background-color: var(--off-black);
     color: var(--off-white);
 }
 .item_cont {
     display: flex;
-    justify-content: center;
     align-items: center;
     gap: 2rem;
-}
-.nav_item {
-    position: relative;
-    --font_size: 1.25rem;
     text-transform: uppercase;
-    font-weight: 900;
-    font-size: var(--font_size);
-    max-width: min-content;
-}
-.knock_off {
-    display: flex;
-    flex-direction: column;
-    font-size: 1.25rem;
-    padding-left: .5rem;
+    font-weight: bolder;
 }
 
-/* Class selection */
 main {
-    height: 93dvh;
-    background-color: var(--soft-yellow);
+    height: calc(100dvh - (4.75rem));
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
-}
-.class_cont {
+    gap: 2rem;
     background-color: var(--text_color);
-    height: fit-content;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 5rem;
+    height: 5rem;
+}
+footer > h1 {
+    border: 1px solid black;
+    cursor: pointer;
+}
+/* index.html */
+main.index {
+    flex-direction: column;
+}
+
+main.index > h1 {
+    font-weight: bolder;
+}
+main.index > form {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    transition: all .4s ease-in-out;
-    width: 20rem;
-    padding: 1rem;
-    border-radius: 2.5rem;
-
-}
-.class_cont:hover {
-    scale: 1.25;
-    box-shadow: 2px 0 1rem .1rem var(--off-black);
-}
-.stats {
-    padding-block: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-.stats > h2 {
-    text-align: center;
-}
-.class_cont > img {
-    max-width: 18rem;
-    background-color: var(--darker-green);
-    border-radius: 2rem;
-    padding: 1.5rem;
-}
-.stats_list > ul {
-    display: flex;
-    
-}
-.stat_cont > img {
-    max-width: 2rem;
-    display: flex;
-}
-.stat_cont {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    padding: .5rem;
-    background-color: #183a3733;
-    border-radius: 1rem;
-    gap: .25rem;
-}
-.stat_cont > hr {
-    height: 100%;
-    border: none;
-    background-color: black;
-    width: 1px;
-    height: 100%;
-}
-
-.stats_list > ul {
-    display: flex;
     gap: 2rem;
 }
-
-.class_cont > button {
-    background-color: var(--darker-green);
+main.index > form > input:not(text),
+main.index > form > input:not(text):focus {
+    outline: none;
     border: none;
-    padding: .5rem 1rem;
-    color: var(--text_color);
+    line-height: 1;
+    background-color: var(--darker-brown);
+    color: var(--text-color);
+    font-size: 1rem;
+    padding: .25rem .75rem;
+    transition: all .1s ease;
 }
-.class_cont > button > a {
-    font-size: 1.25rem;
+main.index > form > input:not(text):focus {
+    box-shadow: var(--off-black) 2px 2px;
+} 
 
+main.index > form > button {
+    background-color: var(--darker-brown);
+    border: none;
+    font-weight: bolder;
+    font-size: large;
+    padding: .5rem 1.5rem;
+    color: white;
+    position: relative;
 }
 
-.enemies_cont {
-    max-width: 50dvw;
-    height: calc(100dvh - var(--nav-height));
+
+/* class setup */
+/* flex-cont */
+main.class_setup {
+    overflow: hidden;
+    max-width: 100dvw;
+}
+.class_wrapper {
+    background-color: var(--off-white);
+    padding: .5rem;
+    border-radius: 1.5rem;
+    aspect-ratio: 9 / 16;
+}
+
+.subclass {
+    text-align: center;
+    margin-block: .4rem;
+    text-decoration: underline;
+}
+.class_wrapper > img {
+    height: 20rem;
+    aspect-ratio: 5 / 6;
+    object-fit: contain;
+    background-color: #183a37;
+    border-radius: 1rem;
+    padding: 1rem;
+}
+.class_wrapper > a {
+    background-color: var(--darker-green);
+    padding: .5rem 1.5rem;
+    color: white;
+    display: block;
+    width: fit-content;
+    margin: 1.25rem auto;
+
+    transition: all .1s ease-in-out;
+}
+.class_wrapper > a:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 2px 2px 0 black;
+}
+.stats_cont > ul {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    flex-direction: row;
-    flex-wrap: wrap;
+    margin-block: 1.25rem;
 }
-
-.enemies_cont > .class_cont {
-    height: 40dvh;
-    width: 40%;
+.stats_cont > ul > li > img {
+    aspect-ratio: 1 / 1;
+    height: 1.25rem;
 }
-.enemies_cont > .class_cont > .stats > .stats_list > ul {
-    gap: 1rem;
-
-} 
-.enemies_cont > .class_cont > img {
-    height: 100%;
-    width: 100%;
-    object-fit: contain;
+.stats_cont > ul > li {
+    display: grid;
+    grid-template-columns: .3fr 1rem .3fr;
+    background-color: var(--transparent-white);
+    padding: .25rem;
+    border-radius: .5rem;
+}
+.stats_cont > ul > li > * {
+    justify-self: center;
+    align-self: center;
+}
+.stats_cont > ul > li > hr {
+    border: none;
+    background-color: var(--off-black);
+    height: 80%;
+    width: 2px;
+}
+.stats_cont > ul > li > p > .strong {
+    font-weight: bolder;
+    font-size: 1.25rem;
 }

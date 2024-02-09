@@ -1,39 +1,61 @@
 from random import randint
 from weapon import player_weapons
+from typing import Any
+
+# needed for rendering
+def return_class_name_list():
+    return list(player_weapons().keys())
+
+
+def class_attributes(subclass):
+    match subclass.lower():
+        case 'fighter':
+            health = 10
+            defense = 2
+        case 'rogue':
+            health = 8
+            defense = 1
+        case 'mage':
+            health = 6
+            defense = 0
+        case 'barbarian':
+            health = 12
+            defense = 0
+        case _:
+            return None, None
+
+    return health, defense
+
+# needed for rendering
+def gen_lvl1_info(taken_class=''):
+    lvl1_list = []
+    for subclass in player_weapons():
+        if taken_class and taken_class == subclass:
+            continue
+        
+        health, defense = class_attributes(subclass)
+
+        og_dct = player_weapons()[subclass]['level 1']
+        og_dct.pop('name', 'modifier')
+        
+        og_dct.update(subclass=subclass, health=health, defense=defense) # type: ignore
+
+        lvl1_list.append(og_dct)
+
+    return lvl1_list
+
+print(gen_lvl1_info('Fighter'))
 
 class Player:
-    def __init__(self, weapons, name: str, player_class: str, is_npc: bool) -> None:
-        self.__is_npc = is_npc
-        self.__weapons = weapons
-        self.__class = player_class
-        # placeholder
-        self.__weapons = player_weapons().get(player_class, 'Fighter')
-
-
-        self.__weapon = weapons[0]
-        self.__name = name
+    def __init__(self, name: str, subclass: str) -> None:
+        self.subclass = subclass
+        self.name = name
         self.__level = 1
-
-
-
-        match player_class.lower():
-            case 'fighter':
-                self.__health = 10
-                self.__defense = 2
-            case 'rogue':
-                self.__health = 8
-                self.__defense = 1
-            case 'mage':
-                self.__health = 6
-                self.__defense = 0
-            case 'barbarian':
-                self.__health = 12
-                self.__defense = 0
-            case _:
-                self.__health = 0
-                self.__defense = 0
-
-        self.__current_health = self.__health
+        self.health, self.defense = class_attributes(subclass)
+        self.weapons, self.damage, self.modifier = player_weapons()[subclass]['level 1'].values()
+        self.__current_health = self.health
+        if name == subclass:
+            self.is_npc = True
 
     def attack(self, targets, target=None):
         damage = 0
@@ -44,7 +66,7 @@ class Player:
 
         damage += self.__weapon.get('modifier', 0) # type: ignore
 
-        if self.__is_npc:
+        if self.is_npc:
             target = targets[randint(0, len(targets))]
             target.take_damage(damage)
             return
@@ -55,9 +77,9 @@ class Player:
     
     def level_up(self):
         self.__level += 1
-        self.__defense += 1
+        self.defense += 1
 
-        match self.__class.lower():
+        match self.subclass.lower():
             case 'fighter':
                 self.__health += 10
             case 'rogue':
@@ -70,25 +92,25 @@ class Player:
                 self.__health = 0
         
         weapon_string = f"level {self.__level}"
-        self.__weapon = self.__weapons.get(weapon_string, 'level 1') # type: ignore
+        self.weapon = self.weapons.get(weapon_string, 'level 1') # type: ignore
 
     def take_damage(self, damage: int):
-        if (damage - self.__defense) <= 0:
+        if (damage - self.defense) <= 0:
             return
-        self.__current_health -= (damage - self.__defense)
+        self.__current_health -= (damage - self.defense)
         # return if health is below / equals 0?
     
     def heal_to_full(self):
-        self.__current_health = self.__health
+        self.__current_health = self.health
 
     def get_current_health(self):
         return self.__current_health
     
     def get_max_health(self):
-        return self.__health
+        return self.health
 
     def get_name(self):
-        return self.__name
+        return self.name
 
 
 

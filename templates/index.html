@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+
+{% block title %}Welcome{% endblock title %}
+{% block nav_title %}Welcome.{% endblock nav_title %}
+{% block script %}
+    <script src="../static/script/alert.js" defer></script>
+{% endblock script %}
+
+{% block body %}
+    <main class="index">
+        <h1>An openAi based DnD game.</h1>
+        <form action="/" method="POST">
+            <input type="text" name="user_name" id="user_name">
+            <button type="submit">Let's begin our journey.</button>
+        </form>
+    </main>
+{% endblock body %}

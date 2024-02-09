@@ -1,6 +1,8 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, request, url_for
 # from random import randint
 import combat as c
+from player import Player as Pr
+from player import return_class_name_list, gen_lvl1_info
 
 
 class Player:
@@ -26,36 +28,53 @@ class Enemy:
 app = Flask(__name__)
 app.config['TEMPLATE_AUTO_RELOAD'] = True
 
-
+# Welcome page
 @app.route('/', methods=['GET'])
 def index():
-    return 'hello'
+    return render_template('index.html')
+
+@app.route('/', methods=['POST'])
+def user():
+    user_name = request.form['user_name']
+    return redirect(url_for('setup', user_name=user_name))
+
+
+# class setup
+@app.route('/class_setup', methods=['GET'])
+def setup():
+    user_name = request.args.get('user_name')
+    return render_template('setup.html',
+                           classes=gen_lvl1_info(),
+                           user_name=user_name
+                        )
+    
+@app.route('/class/<user_info>', methods=['GET'])
+def return_class(user_info):
+    """
+    subclass=Rogue;user_name=Lajos;
+    """
+    if not user_info.startswith('subclass='):
+        redirect('/')
+    
+    player_class, user_name = (value.split('=')[-1] for value in user_info.rstrip(';').split(';'))
+    
+    player = Pr(name=user_name, subclass=player_class)
+    npcs = [Pr(name=npc_class['subclass'], subclass=npc_class['subclass']) for npc_class in gen_lvl1_info(player_class)]
+
+    return redirect('/')
+
+
 
 @app.route('/combat', methods=['GET'])
 def combat():
-    return render_template('combat.html',
-                           enemies=[Enemy() for _ in range(4)],
-                           team=[Player() for _ in range(4)],
-                           npcs=[Player() for _ in range(3)],
-                           player=Player()
-                    )
+    return render_template('combat.html')
                            
 
 @app.route('/combat/<enemy>')
 def enemy_selection(enemy):
-    damage = c.damage_calc()
     return render_template('combat.html')
 
-@app.route('/class_setup', methods=['POST', 'GET'])
-def setup():
-    return render_template('setup.html',
-                           classes=[Player() for _ in range(4)],
-                           nav_title='Welcome.'
-                        )
 
-@app.route('/class/<class_name>', methods=['POST', 'GET'])
-def return_class(class_name):
-    return class_name
 
 
 ai_response = {
