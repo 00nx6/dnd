@@ -10,6 +10,8 @@
     --off-black: #04151f;
     --transparent-white: rgba(255, 255, 255, 0.6);
     --base_font: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    --num-columns: 0;
+
 }
 
 * {
@@ -81,11 +83,20 @@ main.index > form {
     flex-direction: column;
     gap: 2rem;
 }
-main.index > form > input:not(text),
-main.index > form > input:not(text):focus {
+main.index > form > fieldset {
+    border: 2px solid black;
+    padding-top: .25rem;
+    border-radius: .25rem;
+}
+main.index > form > fieldset > legend {
+    line-height: .5;
+}
+main.index > form > fieldset > input:not(text),
+main.index > form > fieldset > input:not(text):focus {
+    border-radius: .15rem;
     outline: none;
     border: none;
-    line-height: 1;
+    line-height: 1.5;
     background-color: var(--darker-brown);
     color: var(--text-color);
     font-size: 1rem;
@@ -177,4 +188,48 @@ main.class_setup {
 .stats_cont > ul > li > p > .strong {
     font-weight: bolder;
     font-size: 1.25rem;
+}
+
+/* story */
+main.story {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 100%;
+}
+
+main.story > .story_cont {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: calc(50dvw - 2rem);
+    padding: 2rem;
+}
+.story_cont > .text_cont {
+    padding: 2rem;
+}
+.story_cont > .text_cont > * {
+    text-align: center;
+    margin-block: 1.5rem;
+}
+.options {
+    display: grid;
+    gap: 2rem;
+}
+.options > .options_item {
+    background-color: #432534;
+    padding: .25rem .5rem;
+    min-height: 5rem;
+    min-width: 10rem;
+    font-size: 1.25rem;
+    color: white;
+}
+
+.story_cont > .options_cont {
+    display: grid;
+    grid-template-rows: auto;
+    /* padding-bottom: 2rem;
+    padding-inline: 2rem; */
+    gap: 2rem;
+    overflow: hidden;
 }

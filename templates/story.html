@@ -1,24 +1,28 @@
-{% extends "base.html" %}
+{% extends "main_layout.html" %}
 
 {% block title %}{{ res['page_title'] }}{% endblock title %}
-
+{% block script %}
+    <script src="../static/script/options_layout.js" defer></script>
+{% endblock script %}
 {% block nav_title %}
     {{ res['chapter']['title'] }}
 {% endblock nav_title %}
 
 {% block body %}
+
 <main class="story">
     <div class="story_cont">
         <div class="text_cont">
+            <h1> {{ res['chapter']['title'] }} </h1>
             <p>
                 {{ res['chapter']['story'] }}
             </p>
         </div>
         <div class="options_cont">
             <!-- npc options -->
-            {% if res['chapter']['story_actions']['npc_options'] %}
+            {% if res['chapter']['story_actions']['npc_option'] %}
                 <ul class="options npc">
-                    {% for option in res['chapter']['story_actions']['npc_options'] %}
+                    {% for option in res['chapter']['story_actions']['npc_option'] %}
                     <li class="options_item">
                         <a href="/story/{{ option }}"> {{ option }}</a>
                     </li>
@@ -27,9 +31,9 @@
             {% endif %}
 
             <!-- enemy options -->
-            {% if res['chapter']['story_actions']['enemy_options'] %}
+            {% if res['chapter']['story_actions']['enemy_option'] %}
                 <ul class="options enemy">
-                    {% for option in res['chapter']['story_actions']['enemy_options'] %}
+                    {% for option in res['chapter']['story_actions']['enemy_option'] %}
                     <li class="options_item">
                         <a href="/story/{{ option }}"> {{ option }}</a>
                     </li>
@@ -55,7 +59,9 @@
         another base.html would work well because half the page on here
         will never change.
     -->
-    
-    <div class="char_cont"></div>
+    {% block team %}
+       {{ super() }} 
+       
+    {% endblock team %}
 </main>
 {% endblock body %}
