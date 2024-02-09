@@ -1,9 +1,6 @@
 from monster import Monster
 from player import Player
 
-# TODO: Class -> Player, NPCs, Enemies
-# Handles combat participants and NPC / Enemy attacks
-
 class CombatHandler:
     def __init__(self, player: Player, npcs: list[Player], enemies: list[Monster]) -> None:
         self.player = player
