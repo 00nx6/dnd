@@ -5,17 +5,17 @@ from weapon import player_weapons
 def return_class_name_list():
     return list(player_weapons().keys())
 
-
-def class_attributes(subclass):
+    
+def class_attributes(subclass, lvl_up_attr=1):
     match subclass.lower():
         case 'fighter':
-            health = 10
+            health = (10 * lvl_up_attr)
             defense = 2
         case 'rogue':
-            health = 8
+            health = (8 * lvl_up_attr)
             defense = 1
         case 'mage':
-            health = 6
+            health = (6 * lvl_up_attr)
             defense = 0
         case 'barbarian':
             health = 12
@@ -43,12 +43,15 @@ class Player:
     def __init__(self, name: str, subclass: str) -> None:
         self.subclass = subclass
         self.name = name
-        self.__level = 1
+        self.level = 1
         self.health, self.defense = class_attributes(subclass)
         self.weapons, self.damage, self.modifier = player_weapons()[subclass]['level 1'].values()
         self.__current_health = self.health
         if name == subclass:
             self.is_npc = True
+
+    def __str__(self) -> str:
+        return f'{self.name, self.subclass, self.level}'
 
     def attack(self, targets, target=None):
         damage = 0
@@ -68,24 +71,33 @@ class Player:
         target.take_damage(damage)
         return
     
+    
+    # ???
     def level_up(self):
-        self.__level += 1
+        self.level += 1
         self.defense += 1
+        self.health, _ = class_attributes(self.subclass, self.level+1)
+        self.weapons, self.damage, self.modifier = player_weapons()[self.subclass][f'level {self.level}'].values()
 
-        match self.subclass.lower():
-            case 'fighter':
-                self.__health += 10
-            case 'rogue':
-                self.__health += 8
-            case 'mage':
-                self.__health += 6
-            case 'barbarian':
-                self.__health += 12
-            case _:
-                self.__health = 0
-        
-        weapon_string = f"level {self.__level}"
-        self.weapon = self.weapons.get(weapon_string, 'level 1') # type: ignore
+
+        # weapon_string = f"level {self.level}"
+        # self.weapon = self.weapons.get(weapon_string, 'level 1') # type: ignore
+
+
+        # match self.subclass.lower():
+        #     case 'fighter':
+        #         self.health += 10
+        #     case 'rogue':
+        #         self.health += 8
+        #     case 'mage':
+        #         self.health += 6
+        #     case 'barbarian':
+        #         self.health += 12
+        #     case _:
+        #         pass
+
+        # weapon_string = f"level {self.level}"
+        # self.weapon = self.weapons.get(weapon_string, 'level 1') # type: ignore
 
     def take_damage(self, damage: int):
         if (damage - self.defense) <= 0:
