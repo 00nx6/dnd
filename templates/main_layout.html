@@ -34,9 +34,37 @@
     </header>
 {% block body %}    
     {% block team %}
-    
+    <div class="class_wrapper">
+        <img src="../static/{{player_class['subclass']|lower}}.png" alt="">
+        <h2 class="subclass"> {{ player_class['subclass'] }}</h2>
+        <div class="stats_cont">
+            <ul>
+                <li>
+                    <img src="../static/setup_img/health-care.png" alt="">
+                    <hr>
+                    <p>
+                        <span class="strong">{{ player_class['health'] }}</span>
+                    </p>
+                </li>
+                <li>
+                    <img src="../static/setup_img/shield.png" alt="">
+                    <hr>
+                    <p>
+                        <span class="strong">{{ player_class['defense'] }}</span>
+                    </p>
+                </li>
+                <li>
+                    <img src="../static/setup_img/sword.png" alt="">
+                    <hr>
+                    <p>
+                        <span class="strong">{{ player_class.damage }}</span>
+                    </p>
+                </li>
+            </ul>
+        </div>
+        <a href="/class/subclass={{ player_class['subclass'] }};user_name={{ user_name }};">Select class</a>
+    </div>
     {% endblock team %}
-
 {% endblock body %}
 </body>
 </html>

@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, request, url_for
 from player import Player as Pr
-from player import gen_lvl1_info
+from player import gen_lvl1_info, return_class_name_list
 
 
 app = Flask(__name__)
@@ -40,19 +40,29 @@ def return_class(user_info):
         redirect('/')
     
     player_class, user_name = (value.split('=')[-1] for value in user_info.rstrip(';').split(';'))
+    print(player_class)
+    return redirect(url_for('story', player_class=player_class, user_name=user_name))
 
+
+def init_class(user_name, player_subclass):
+    player = Pr(name=user_name, subclass=player_subclass)
+    npcs = [Pr(name=subclass, subclass=subclass) for subclass in return_class_name_list() if subclass != player_subclass]
     
-    player = Pr(name=user_name, subclass=player_class)
-    npcs = [Pr(name=npc_class['subclass'], subclass=npc_class['subclass']) for npc_class in gen_lvl1_info(player_class)]
-
-    return redirect(url_for('story', player=player, npcs=npcs))
+    return player, npcs
 
 @app.route('/story', methods=['GET'])
 def story():
-    player = request.args.get('player')
-    npcs = request.args.get('npcs')
+    player_subclass = request.args.get('player_class')
+    user_name = request.args.get('user_name')
 
-    return render_template('story.html', res=ai_response)
+    player_class, npcs = init_class(user_name=user_name, player_subclass=player_subclass)
+
+
+    return render_template('story.html',
+                           res=ai_response,
+                           player_class=player_class,
+                           npcs=npcs
+                           )
 
 @app.route('/combat', methods=['GET'])
 def combat():
