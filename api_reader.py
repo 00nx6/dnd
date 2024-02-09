@@ -1,21 +1,15 @@
 # AI response expected format
 ai_response = {
-    'page_title': 'The Forbidden Forest',
-    'chapter': {
-        'title': 'Lost in the Woods',
-        'story': "You find yourself lost in the heart of the Forbidden Forest. The dense canopy blocks out most of the sunlight, leaving you in near darkness. Strange sounds echo around you, and you can't shake the feeling of being watched.",
-        'enemies': [
+    "page_title": "The Forbidden Forest",
+    "chapter": {
+        "title": "Lost in the Woods",
+        "story": "You find yourself lost in the dense woods of the Forbidden Forest, the twisted trees blocking out the sun. As you navigate through the thick underbrush, you stumble upon an ancient ruin, its crumbling stones whispering secrets of long-forgotten magic. Suddenly, a pack of snarling wolves emerges from the shadows, their eyes gleaming with hunger.",
+        "enemies": [
             {
-                'enemy_name': 'Darkwood Goblins',
-                'health': 15,
-                'defense': 12,
-                'damage': '1d6+2 slashing'
-            },
-            {
-                'enemy_name': 'Shadow Wolves',
-                'health': 20,
-                'defense': 14,
-                'damage': '1d8+1 piercing'
+                "enemy_name": "Wolf Pack",
+                "health": 20,
+                "defense": 2,
+                "damage": "1d6+2"
             }
         ]
     }
