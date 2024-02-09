@@ -35,7 +35,7 @@
     {% block team %}
     <div class="team_wrap">
         <div class="class_wrapper">
-            <img src="../static/{{player_class.subclass|lower}}.png" alt="">
+            <img src="../static/{{random}}.png" alt="">
             <h2 class="subclass"> {{ player_class.subclass }}</h2>
             <div class="stats_cont">
                 <ul>
@@ -76,9 +76,9 @@
             </div>
         </div>
         <div class="npc_wrapper">
-            {% for enemy in sub_enemies %}
+            {% for enemy in res['chapter']['enemies'] %}
                 <div class="class_wrapper">
-                    <img src="../static/{{enemy['subclass']|lower}}.png" alt="">
+                    <img src="../static/{{loop.index}}.png" alt="">
                     <h2 class="subclass"> {{ enemy.enemy_name }}</h2>
                     <div class="stats_cont">
                         <ul>

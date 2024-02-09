@@ -3,7 +3,7 @@ from player import Player as Pr
 from player import gen_lvl1_info, return_class_name_list
 from combat_handler import CombatHandler
 from api_call import OpenAIInterpreter
-
+from random import randint
 # rewowrk html generation
 # remodel based on new obj
 
@@ -84,9 +84,9 @@ def story():
     return render_template('story.html',
                            res=resp,
                            player_class=player_class,
-                           npcs=npcs,
-                           nav_title='current story chapter'
-                           )
+                           nav_title=resp['page_title'],
+                           random=randint(1, 7)
+                        )
 
 @app.route('/story/combat', methods=['GET'])
 def combat():
