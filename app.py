@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, request, url_for
 from player import Player as Pr
 from player import gen_lvl1_info, return_class_name_list
 
+game_cont = {}
 
 app = Flask(__name__)
 app.config['TEMPLATE_AUTO_RELOAD'] = True
@@ -47,7 +48,7 @@ def return_class(user_info):
 def init_class(user_name, player_subclass):
     player = Pr(name=user_name, subclass=player_subclass)
     npcs = [Pr(name=subclass, subclass=subclass) for subclass in return_class_name_list() if subclass != player_subclass]
-    
+
     return player, npcs
 
 @app.route('/story', methods=['GET'])
@@ -57,11 +58,11 @@ def story():
 
     player_class, npcs = init_class(user_name=user_name, player_subclass=player_subclass)
 
-
     return render_template('story.html',
                            res=ai_response,
                            player_class=player_class,
-                           npcs=npcs
+                           npcs=npcs,
+                           nav_title=ai_response['chapter']['title']
                            )
 
 @app.route('/combat', methods=['GET'])

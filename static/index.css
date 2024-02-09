@@ -228,8 +228,21 @@ main.story > .story_cont {
 .story_cont > .options_cont {
     display: grid;
     grid-template-rows: auto;
-    /* padding-bottom: 2rem;
-    padding-inline: 2rem; */
     gap: 2rem;
     overflow: hidden;
+}
+.team_wrap {
+    --cont-height:calc(100dvh - 4.75rem); 
+    height: var(--cont-height);
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} 
+.team_wrap > .class_wrapper {
+    max-height: calc(var(--cont-height) - 41%);
+}
+.class_wrapper > .stats_cont > ul > li {
+    text-wrap: nowrap;
+    width: fit-content;
 }
