@@ -74,36 +74,19 @@ class Player:
     
     # ???
     def level_up(self):
+        if self.defense is None:
+            return
         self.level += 1
         self.defense += 1
-        self.health, _ = class_attributes(self.subclass, self.level+1)
+        self.health, _ = class_attributes(self.subclass, self.level)
         self.weapons, self.damage, self.modifier = player_weapons()[self.subclass][f'level {self.level}'].values()
 
-
-        # weapon_string = f"level {self.level}"
-        # self.weapon = self.weapons.get(weapon_string, 'level 1') # type: ignore
-
-
-        # match self.subclass.lower():
-        #     case 'fighter':
-        #         self.health += 10
-        #     case 'rogue':
-        #         self.health += 8
-        #     case 'mage':
-        #         self.health += 6
-        #     case 'barbarian':
-        #         self.health += 12
-        #     case _:
-        #         pass
-
-        # weapon_string = f"level {self.level}"
-        # self.weapon = self.weapons.get(weapon_string, 'level 1') # type: ignore
-
     def take_damage(self, damage: int):
+        if self.defense is None or self.__current_health is None:
+            return
         if (damage - self.defense) <= 0:
             return
         self.__current_health -= (damage - self.defense)
-        # return if health is below / equals 0?
     
     def heal_to_full(self):
         self.__current_health = self.health
