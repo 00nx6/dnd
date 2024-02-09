@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}{{ res['page_title'] }}{% endblock title %}
+
+{% block nav_title %}
+    {{ res['chapter']['title'] }}
+{% endblock nav_title %}
+
+{% block body %}
+<main class="story">
+    <div class="story_cont">
+        <div class="text_cont">
+            <p>
+                {{ res['chapter']['story'] }}
+            </p>
+        </div>
+        <div class="options_cont">
+            <!-- npc options -->
+            {% if res['chapter']['story_actions']['npc_options'] %}
+                <ul class="options npc">
+                    {% for option in res['chapter']['story_actions']['npc_options'] %}
+                    <li class="options_item">
+                        <a href="/story/{{ option }}"> {{ option }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <!-- enemy options -->
+            {% if res['chapter']['story_actions']['enemy_options'] %}
+                <ul class="options enemy">
+                    {% for option in res['chapter']['story_actions']['enemy_options'] %}
+                    <li class="options_item">
+                        <a href="/story/{{ option }}"> {{ option }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <!-- entity_options -->
+            {% if res['chapter']['story_actions']['entity_options'] %}
+                <ul class="options entity">
+                    {% for option in res['chapter']['story_actions']['entity_options'] %}
+                    <li class="options_item">
+                        <a href="/story/{{ option }}"> {{ option }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        
+        </div>
+    </div>
+    <!-- 
+        extends base2.html?
+        another base.html would work well because half the page on here
+        will never change.
+    -->
+    
+    <div class="char_cont"></div>
+</main>
+{% endblock body %}

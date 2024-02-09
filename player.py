@@ -1,6 +1,5 @@
 from random import randint
 from weapon import player_weapons
-from typing import Any
 
 # needed for rendering
 def return_class_name_list():
@@ -32,19 +31,13 @@ def gen_lvl1_info(taken_class=''):
     for subclass in player_weapons():
         if taken_class and taken_class == subclass:
             continue
-        
         health, defense = class_attributes(subclass)
-
         og_dct = player_weapons()[subclass]['level 1']
         og_dct.pop('name', 'modifier')
-        
         og_dct.update(subclass=subclass, health=health, defense=defense) # type: ignore
-
         lvl1_list.append(og_dct)
 
     return lvl1_list
-
-print(gen_lvl1_info('Fighter'))
 
 class Player:
     def __init__(self, name: str, subclass: str) -> None:

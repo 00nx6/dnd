@@ -1,28 +1,6 @@
 from flask import Flask, render_template, redirect, request, url_for
-# from random import randint
-import combat as c
 from player import Player as Pr
-from player import return_class_name_list, gen_lvl1_info
-
-
-class Player:
-    def __init__(self):
-        self.name = 'Lajos'
-        self.subclass = 'Archer'
-        self.damage = '1d6+2'
-        self.defense = '4'
-        self.hp = 12
-
-class Enemy:
-    def __init__(self):
-        self.name = 'Goblin'
-        self.subclass = 'Archer'
-        self.damage = '1d6+2'
-        self.defense = '2'
-        self.hp = 10
-
-    def sustain_damage(self):
-        self.hp -= c.damage_calc(player=Player())
+from player import gen_lvl1_info
 
 
 app = Flask(__name__)
@@ -61,9 +39,14 @@ def return_class(user_info):
     player = Pr(name=user_name, subclass=player_class)
     npcs = [Pr(name=npc_class['subclass'], subclass=npc_class['subclass']) for npc_class in gen_lvl1_info(player_class)]
 
-    return redirect('/')
+    return redirect(url_for('story', player=player, npcs=npcs))
 
-
+@app.route('/story', methods=['GET'])
+def story():
+    player = request.args.get('player')
+    npcs = request.args.get('npcs')
+    print(npcs, player)
+    return render_template('story.html', res=ai_response)
 
 @app.route('/combat', methods=['GET'])
 def combat():
@@ -76,26 +59,26 @@ def enemy_selection(enemy):
 
 
 
-
 ai_response = {
     'page_title': 'Usually referring to the current story arc or location',
     'chapter': {
         # will be displayed to the user.
         'title': 'current story chapter',
         # contains a short story
-        'story': 'max 150 words',
+        'story': "Welcome, brave adventurers, to the mystical realm of Eldoria, where magic and monsters reign supreme. The land is cloaked in ancient mysteries, and a palpable tension hangs in the air as unseen forces vie for control. As you step into the bustling city of Eldoria's Crossroads, a mysterious letter arrives, beckoning you to the Moonlight Citadel. Rumors of a long-lost artifact, the Astral Keystone, have surfaced, and its rediscovery could tip the balance of power in the realm. Your party, a diverse group of warriors, mages, and rogues, has been chosen by fate to embark on this perilous quest. From the shadowy Whispering Woods to the fiery depths of the Dragon's Maw, you will face formidable challenges, forge alliances, and unravel the secrets that bind Eldoria. The fate of the realm rests in your hands, and as the sun sets on the horizon, your journey into the unknown begins. May your swords stay sharp, spells true, and courage unwavering in this epic Dungeons & Dragons adventure!",
+
         # options to move forward in the story.
         'story_actions': {
             'npc_option': [
                 'example: Purchase offered goods', 'example: Accept Quest'
                 ],
-                'enemy_option': [
-                    'example: attack enemy', 'example: loot corpse'
-                ],
-                'entity_options': [
-                    'example: pull lever', 'example: open chest'
-                ]
-            },
+            'enemy_option': [
+                'example: attack enemy', 'example: loot corpse'
+            ],
+            'entity_options': [
+                'example: pull lever', 'example: open chest'
+            ]
+        },
         # list of enemies in combat with
         # only populate if mentioned by name in the story
         'enemies': [
@@ -153,14 +136,6 @@ ai_response = {
         ]
     }
 }
-
-
-
-def main():
-    pass
-
-if __name__ == '__main__':
-    main()
 
 """
 what i have so far for the prompt:
