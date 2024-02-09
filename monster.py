@@ -4,8 +4,13 @@ class Monster:
         self.__hp = hp
         self.__defense = defense
         self.__weapon = weapon
-        self.__weapon_dice = self.__weapon.split("+")[0]
-        self.__weapon_bonus = int(self.__weapon.split("+")[1])
+        if len(self.__weapon.split("+")) > 1:
+            self.__weapon_dice = self.__weapon.split("+")[0]
+            self.__weapon_bonus = int(self.__weapon.split("+")[1])
+        else:
+            self.__weapon_dice = self.__weapon
+            self.__weapon_bonus = 0
+
 
     def get_name(self):
         return self.__name
