@@ -4,7 +4,7 @@ from player import gen_lvl1_info, return_class_name_list
 from combat_handler import CombatHandler
 import openAI
 
-game_cont = {}
+
 game_content = {}
 
 app = Flask(__name__)
@@ -44,7 +44,7 @@ def return_class(user_info):
         redirect('/')
     
     player_class, user_name = (value.split('=')[-1] for value in user_info.rstrip(';').split(';'))
-    print(player_class)
+
     return redirect(url_for('story', player_class=player_class, user_name=user_name))
 
 
