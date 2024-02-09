@@ -1,8 +1,11 @@
 from flask import Flask, render_template, redirect, request, url_for
 from player import Player as Pr
 from player import gen_lvl1_info, return_class_name_list
+from combat_handler import CombatHandler
+from api_reader import ResponseHandler # Use for enemies/story/etc
 
 game_cont = {}
+game_content = {}
 
 app = Flask(__name__)
 app.config['TEMPLATE_AUTO_RELOAD'] = True
@@ -58,6 +61,10 @@ def story():
 
     player_class, npcs = init_class(user_name=user_name, player_subclass=player_subclass)
 
+    game_content['player'] = player_class
+    game_content['npcs'] = npcs
+    #game_content['enemies'] = ResponseHandler.get_chapter_enemies(ai_response)
+
     return render_template('story.html',
                            res=ai_response,
                            player_class=player_class,
@@ -71,7 +78,13 @@ def combat():
                            
 
 @app.route('/combat/<enemy>')
-def enemy_selection(enemy):  # noqa: ARG001
+def enemy_selection(enemy):
+    ch = CombatHandler(game_content['player'], game_content['npcs'], game_content['enemies'])
+    ch.player_attack(enemy)
+    results = ch.initiate_combat_round()
+    game_content['player'] = results.get('player', '')
+    game_content['npcs'] = results.get('npcs', '')
+    game_content['enemies'] = results.get('enemies', '')
     return render_template('combat.html')
 
 

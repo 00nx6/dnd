@@ -29,6 +29,7 @@ class CombatHandler:
         for enemy in self.enemies[:]:
             if enemy.get_hp() >= 0:
                 self.enemies.remove(enemy)
+        return {'enemies': self.enemies, 'npcs': self.npcs, 'player': self.player}
     
     def end_combat(self):
         for character in self.enemy_targets:
